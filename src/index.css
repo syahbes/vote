@@ -1,0 +1,17 @@
+/* color pallet */
+:root {
+  --primary-color: #FF0083;
+  /* --secondary-color: #2ecc71; */
+  /* --accent-color: #e74c3c; */
+  --background-color: #171717;
+  --text-color: #fff;
+}
+/* base styles */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
