@@ -1,10 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Mada:wght@200..900&display=swap");
+
 /* color pallet */
 :root {
-  --primary-color: #FF0083;
-  /* --secondary-color: #2ecc71; */
-  /* --accent-color: #e74c3c; */
+  --primary-color: #ff0083;
+
   --background-color: #171717;
+  --background-color-card: #1c1c1c;
+  --background-color-chip: #272727;
+  --card-border-color: #3D3D3D;
+  
+
   --text-color: #fff;
+  --font-family: "Mada", sans-serif;
 }
 /* base styles */
 
@@ -12,6 +19,23 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  color: var(--text-color);
+}
+
+body {
+  font-family: var(--font-family);
   background-color: var(--background-color);
+  color: var(--text-color);
+}
+h1 {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 60px;
+  color: var(--primary-color);
+}
+h3 {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 30px;
   color: var(--text-color);
 }
