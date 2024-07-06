@@ -1,0 +1,30 @@
+.titleWrapper {
+    width: 90%;
+    margin: 0 auto;
+    position: relative;
+    padding: 20px;
+  }
+  
+  .blockchainLogo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+    transform: rotate(+10deg); /* Adjust this angle as needed */
+  }
+  
+  .blockchainLogo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .blockchainLogo {
+      width: 60px;
+      height: 60px;
+      left: -20px;
+    }
+    
+  }

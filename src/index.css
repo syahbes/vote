@@ -1,25 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Mada:wght@200..900&display=swap");
 
-/* color pallet */
 :root {
   --primary-color: #ff0083;
-
   --background-color: #171717;
   --background-color-card: #1c1c1c;
   --background-color-chip: #272727;
-  --card-border-color: #3D3D3D;
-  
-
+  --card-border-color: #3d3d3d;
   --text-color: #fff;
   --font-family: "Mada", sans-serif;
 }
-/* base styles */
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  color: var(--text-color);
 }
 
 body {
@@ -38,4 +32,59 @@ h3 {
   font-weight: 700;
   font-size: 30px;
   color: var(--text-color);
+}
+.app {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.proposalsTitle {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.proposalsContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 40px;
+  }
+  h3 {
+    font-size: 20px;
+    width: 60%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+  }
+
+  .proposalsContainer {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    gap: 20px;
+  }
+  .proposalsTitle {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: fit-content;
+    
+    
+  }
 }

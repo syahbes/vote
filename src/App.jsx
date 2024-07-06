@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 import mockData from "./assets/mock/proposal.json";
-import Header from "./components/Header";
-import Title from "./components/Title";
-import ProposalCard from "./components/ProposalCard";
-import Footer from "./components/Footer";
-import VotingModal from "./components/VotingModal";
+import Header from "./components/header/Header";
+import Title from "./components/title/Title";
+import ProposalCard from "./components/proposalCard/ProposalCard";
+import Footer from "./components/footer/Footer";
+import VotingModal from "./components/votingModal/VotingModal";
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -61,33 +61,4 @@ const App = () => {
   );
 };
 
-const styles = `
-.app {
-  width: 100%;
-  min-height: 100vh;
-}
-
-.proposalsTitle {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 20px;
-}
-
-.proposalsContainer {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-}
-`;
-export default () => (
-  <>
-    <style>{styles}</style>
-    <App />
-  </>
-);
+export default App;
