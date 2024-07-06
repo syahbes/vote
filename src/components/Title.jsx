@@ -1,10 +1,9 @@
 import React from "react";
-import blockchain from "../assets/blockchain.png";
 
 const Title = () => {
   return (
     <div className="titleWrapper">
-      <img src={blockchain} alt="blockchain" className="blockchainLogo" />
+      <img src="/icons/blockchain.png" alt="blockchain" className="blockchainLogo" />
       <h3>Cast Your Vote for The Changes You want!</h3>
       <h1>Shape the Future of Our App</h1>
     </div>

@@ -8,6 +8,8 @@ const ProposalCard = ({
   createdBy,
   createdByAvatar,
   timeRemaining,
+  onClick,
+  id,
 }) => {
   return (
     <div
@@ -43,10 +45,12 @@ const ProposalCard = ({
         </div>
         <div className="time-remaining">
           <div className="clock-icon">
-          <Clock size={16} />
-          <span>{timeRemaining} remaining</span>
+            <Clock size={16} />
+            <span>{timeRemaining} remaining</span>
           </div>
-          <button className="view-details">View Details</button>
+          <button className="view-details" onClick={onClick}>
+            View Details
+          </button>
         </div>
       </div>
     </div>
@@ -173,6 +177,7 @@ export default ({
   createdBy,
   createdByAvatar,
   timeRemaining,
+  onClick,
 }) => (
   <>
     <style>{styles}</style>
@@ -184,6 +189,7 @@ export default ({
       createdBy={createdBy}
       createdByAvatar={createdByAvatar}
       timeRemaining={timeRemaining}
+      onClick={onClick}
     />
   </>
 );

@@ -1,10 +1,8 @@
-import voteLogo from "../assets/vote.png";
-
 const Header = () => {
   return (
     <header>
       <div className="logoWrapper">
-        <img src={voteLogo} alt="vote logo" />
+        <img src={"/icons/logo.png"} alt="vote logo" />
       </div>
       <div className="buttonsStack">
         <button id="submit">Submit Proposal</button>

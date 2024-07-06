@@ -1,14 +1,11 @@
 import React from "react";
-import logo from "../assets/logo.png";
-import mail from "../assets/mail.png";
-import vector from "../assets/vector.png";
 
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-logo">
-          <img src={logo} alt="tomi" className="logo" />
+          <img src='/icons/logo.png' alt="tomi" className="logo" />
         </div>
         <div className="footer-links">
           <div className="link-column">
@@ -34,7 +31,7 @@ const Footer = () => {
         </div>
         <div className="email-us">
           <div className="mail-logo">
-            <img src={mail} alt="mail" />
+            <img src='/icons/mail.png' alt="mail" />
           </div>
           <h3>Email Us</h3>
           <div className="email-text">
@@ -43,7 +40,7 @@ const Footer = () => {
               email for prompt support and feedback.
             </p>
             <div className="vector-logo">
-              <img src={vector} alt="" />
+              <img src='/icons/vector.png' alt="" />
             </div>
           </div>
         </div>

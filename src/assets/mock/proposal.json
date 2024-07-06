@@ -1,0 +1,146 @@
+[
+  {
+    "imageUrl": "/cardBg/cardbga.png",
+    "category": "Team",
+    "title": "Tomi browser name",
+    "description": "Give a new name to tomi browser",
+    "createdBy": "Team",
+    "timeRemaining": "5 hours",
+    "createdByAvatar": "/avatars/ellipse5.png",
+    "question": "Should we add a weather widget to the app?",
+    "votingOption": [
+      "Yes",
+      "No",
+      "Not Sure"
+    ],
+    "id": 1
+  },
+  {
+    "imageUrl": "/cardBg/cardbgb.png",
+    "category": "Community",
+    "title": "New User Board for the DAO",
+    "description": "Give a new name to tomi browser",
+    "createdBy": "0x00...7777777",
+    "createdByAvatar": "/avatars/ellipse6.png",
+    "question": "Should we add a weather widget to the app?",
+    "votingOption": [
+      "Yes",
+      "No",
+      "Not Sure"
+    ],
+    "timeRemaining": "3 hours",
+    "id": 2
+  },
+  {
+    "imageUrl": "/cardBg/cardbga.png",
+    "category": "Team",
+    "title": "Tomi browser name",
+    "description": "Give a new name to tomi browser",
+    "createdBy": "Team",
+    "timeRemaining": "5 hours",
+    "createdByAvatar": "/avatars/ellipse5.png",
+    "question": "Should we add a weather widget to the app?",
+    "votingOption": [
+      "Yes",
+      "No",
+      "Not Sure"
+    ],
+    "id": 3
+  },
+  {
+    "imageUrl": "/cardBg/cardbgb.png",
+    "category": "Community",
+    "title": "New User Board for the DAO",
+    "description": "Give a new name to tomi browser",
+    "createdBy": "0x00...7777777",
+    "createdByAvatar": "/avatars/ellipse6.png",
+    "timeRemaining": "3 hours",
+    "question": "Should we add a weather widget to the app?",
+    "votingOption": [
+      "Yes",
+      "No",
+      "Not Sure"
+    ],
+    "id": 4
+  },
+  {
+    "imageUrl": "/cardBg/cardbga.png",
+    "category": "Team",
+    "title": "Tomi browser name",
+    "description": "Give a new name to tomi browser",
+    "createdBy": "Team",
+    "timeRemaining": "5 hours",
+    "createdByAvatar": "/avatars/ellipse5.png",
+    "question": "Should we add a weather widget to the app?",
+    "votingOption": [
+      "Yes",
+      "No",
+      "Not Sure"
+    ],
+    "id": 5
+  },
+  {
+    "imageUrl": "/cardBg/cardbgb.png",
+    "category": "Community",
+    "title": "New User Board for the DAO",
+    "description": "Give a new name to tomi browser",
+    "createdBy": "0x00...7777777",
+    "createdByAvatar": "/avatars/ellipse6.png",
+    "timeRemaining": "3 hours",
+    "question": "Should we add a weather widget to the app?",
+    "votingOption": [
+      "Yes",
+      "No",
+      "Not Sure"
+    ],
+    "id": 6
+  },
+  {
+    "imageUrl": "/cardBg/cardbgb.png",
+    "category": "Community",
+    "title": "New User Board for the DAO",
+    "description": "Give a new name to tomi browser",
+    "createdBy": "0x00...7777777",
+    "createdByAvatar": "/avatars/ellipse6.png",
+    "timeRemaining": "3 hours",
+    "question": "Should we add a weather widget to the app?",
+    "votingOption": [
+      "Yes",
+      "No",
+      "Not Sure"
+    ],
+    "id": 7
+  },
+  {
+    "imageUrl": "/cardBg/cardbgb.png",
+    "category": "Community",
+    "title": "New User Board for the DAO",
+    "description": "Give a new name to tomi browser",
+    "createdBy": "0x00...7777777",
+    "createdByAvatar": "/avatars/ellipse6.png",
+    "timeRemaining": "3 hours",
+    "question": "Should we add a weather widget to the app?",
+    "votingOption": [
+      "Yes",
+      "No",
+      "Not Sure"
+    ],
+    "id": 8
+  },
+  {
+    "imageUrl": "/cardBg/cardbga.png",
+    "category": "Team",
+    "title": "Tomi browser name",
+    "description": "Give a new name to tomi browser",
+    "createdBy": "Team",
+    "timeRemaining": "5 hours",
+    "createdByAvatar": "/avatars/ellipse5.png",
+    "question": "Should we add a weather widget to the app?",
+    "votingOption": [
+      "Yes",
+      "No",
+      "Not Sure"
+    ],
+    "id": 9
+  }
+]
