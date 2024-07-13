@@ -1,0 +1,149 @@
+.stats-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 24px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.modal-title {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.meta {
+  margin-bottom: 24px;
+}
+
+.created-by {
+  display: flex;
+  align-items: center;
+  color: #a0a0a0;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.team-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin: 0 8px;
+}
+
+.voting-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.vote-option {
+  position: relative;
+  height: 36px;
+  background-color: transparent;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border: 1px solid white;
+}
+
+/* .vote-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: white;
+  z-index: 1;
+  border-radius: 18px;
+  transition: width 0.3s ease;
+} */
+ .vote-bar-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+.vote-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: white;
+  z-index: 1;
+  border-radius: 18px;
+  width: 0; /* Initial width, will animate to a percentage */
+  transition: width 0.3s ease; /* Transition for smooth width changes */
+  animation: increaseWidth 2s ease-in-out forwards; /* Animation for increasing width */
+}
+
+@keyframes increaseWidth {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%; /* Animate to 100% width */
+  }
+}
+
+
+.vote-text,
+.vote-percentage {
+  position: relative;
+  z-index: 2;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.vote-text {
+  flex-grow: 1;
+  margin-left: 16px;
+}
+
+.time-remaining {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a0a0a0;
+  font-size: 14px;
+}
+
+.time-remaining svg {
+  margin-right: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .modal-content {
+    padding: 16px;
+  }
+
+  .modal-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .created-by {
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+}

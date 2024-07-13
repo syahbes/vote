@@ -3,8 +3,11 @@ import { Clock } from "lucide-react";
 import "./index.css";
 import { getFormattedWalletAddress, getTimeRemaining } from "../../utils/utils";
 import { useSelectedProposal } from "../../hooks/useSelectedProposal";
+import { useVoteQuestion } from "../../hooks/useVote";
+import { useWeb3Context } from "../../main";
 
-const VotingModal = ({ onClose, questionId }) => {
+const VotingModal = ({ onClose, questionId, openStatsModal }) => {
+  const { web3State } = useWeb3Context();
   const [selectedOption, setSelectedOption] = useState(null);
 
   const {
@@ -12,6 +15,7 @@ const VotingModal = ({ onClose, questionId }) => {
     error: selectedProposalError,
     data: fetchedSelectedProposal,
   } = useSelectedProposal(questionId);
+  const voteQuestionMutation = useVoteQuestion();
 
   if (isSelectedProposalLoading) {
     return <div>Loading...</div>;
@@ -21,10 +25,28 @@ const VotingModal = ({ onClose, questionId }) => {
     return <div>Error: {selectedProposalError.message}</div>;
   }
 
-  const handleVote = () => {
-    // Handle the voting logic here
-    console.log("Voted:", selectedOption);
-    onClose();
+  const handleVote = async () => {
+    if (!selectedOption) {
+      alert("Please select an option");
+      return;
+    }
+
+    if (!web3State?.isConnected) {
+      alert("Please connect your wallet");
+      return;
+    }
+    const user_id = web3State?.userAddress;
+    try {
+      await voteQuestionMutation.mutateAsync({
+        user_id: user_id,
+        option_id: selectedOption.option_id,
+      });
+      console.log("Voted successfully");
+      onClose();
+      openStatsModal();
+    } catch (error) {
+      console.error("Error voting:", error);
+    }
   };
 
   const handleOverlayClick = (e) => {
@@ -70,8 +92,11 @@ const VotingModal = ({ onClose, questionId }) => {
             </button>
           ))}
         </div>
-        <button className="vote-button" onClick={handleVote}>
-          Vote
+        <button
+          className="vote-button"
+          onClick={handleVote}
+          disabled={voteQuestionMutation.isPending}>
+          {voteQuestionMutation.isPending ? "Voting..." : "Vote"}
         </button>
         <div className="time-remaining">
           <div className="clock-icon-stack">

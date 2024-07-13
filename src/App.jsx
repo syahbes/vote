@@ -1,38 +1,30 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 import Header from "./components/header/Header";
 import Title from "./components/title/Title";
 import ProposalCard from "./components/proposalCard/ProposalCard";
 import Footer from "./components/footer/Footer";
-import VotingModal from "./components/votingModal/VotingModal";
+import SubmitModal from "./components/submitModal/SubmitModal";
 import ConnectModal from "./components/connectModal/ConnectModal";
+import VotingModal from "./components/votingModal/VotingModal";
+import StatsModal from "./components/statsModal/StatsModal";
 
 import { useQuestions } from "./hooks/useQuestions";
 import { getFormattedWalletAddress, getTimeRemaining } from "./utils/utils";
-import SubmitModal from "./components/submitModal/SubmitModal";
 
 const App = () => {
-  const [showVootingModal, setShowVootingModal] = useState(false);
-  const [showConnectModal, setShowConnectModal] = useState(false);
-  const [showSubmitModal, setShowSubmitModal] = useState(false);
-  const [selectedProposal, setSelectedProposal] = useState(null);
-
   const { isPending, error, data: questions } = useQuestions();
+  //Modals
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [showConnectModal, setShowConnectModal] = useState(false);
+  const [showVotingModal, setShowVotingModal] = useState(false);
+  const [showStatsModal, setShowStatsModal] = useState(false);
 
-  useEffect(() => {
-    console.log("Questions:", questions);
-  }, [questions]);
+  const [selectedProposal, setSelectedProposal] = useState(null);
 
   return (
     <div className="app">
-      {showConnectModal && (
-        <ConnectModal
-          onClose={() => {
-            setShowConnectModal(false);
-          }}
-        />
-      )}
       {showSubmitModal && (
         <SubmitModal
           onClose={() => {
@@ -42,10 +34,28 @@ const App = () => {
           questionId={selectedProposal?.question_id}
         />
       )}
-      {showVootingModal && (
+      {showConnectModal && (
+        <ConnectModal
+          onClose={() => {
+            setShowConnectModal(false);
+          }}
+        />
+      )}
+      {showVotingModal && (
         <VotingModal
           onClose={() => {
-            setShowVootingModal(false);
+            setShowVotingModal(false);
+            // setSelectedProposal(null);
+          }}
+          openStatsModal={() => setShowStatsModal(true)}
+          questionId={selectedProposal?.question_id}
+        />
+      )}
+
+      {showStatsModal && (
+        <StatsModal
+          onClose={() => {
+            setShowStatsModal(false);
             setSelectedProposal(null);
           }}
           questionId={selectedProposal?.question_id}
@@ -79,7 +89,7 @@ const App = () => {
                 key={item.question_id}
                 onClick={() => {
                   setSelectedProposal(item);
-                  setShowVootingModal(true);
+                  setShowVotingModal(true);
                 }}
               />
             );
