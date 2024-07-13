@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
-import mockData from "./assets/mock/proposal.json";
 import Header from "./components/header/Header";
 import Title from "./components/title/Title";
 import ProposalCard from "./components/proposalCard/ProposalCard";
@@ -10,36 +9,18 @@ import VotingModal from "./components/votingModal/VotingModal";
 import ConnectModal from "./components/connectModal/ConnectModal";
 
 import { useQuestions } from "./hooks/useQuestions";
-import { useSelectedProposal } from "./hooks/useSelectedProposal";
-
-const baseURL = "http://localhost:4227";
+import { getTimeRemaining } from "./utils/utils";
 
 const App = () => {
-  const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showConnectModal, setShowConnectModal] = useState(false);
   const [selectedProposal, setSelectedProposal] = useState(null);
 
   const { isPending, error, data: questions } = useQuestions();
-  const {
-    isPending: isSelectedProposalLoading,
-    error: selectedProposalError,
-    data: fetchedSelectedProposal,
-  } = useSelectedProposal(selectedProposal?.id);
-
-  useEffect(() => {
-    setData(mockData);
-  }, []);
 
   useEffect(() => {
     console.log("Questions:", questions);
   }, [questions]);
-
-  useEffect(() => {
-    if (fetchedSelectedProposal) {
-      console.log("Selected Proposal Data:", fetchedSelectedProposal);
-    }
-  }, [fetchedSelectedProposal]);
 
   return (
     <div className="app">
@@ -56,11 +37,7 @@ const App = () => {
             setShowModal(false);
             setSelectedProposal(null);
           }}
-          question={selectedProposal?.question}
-          votingOption={selectedProposal?.votingOption}
-          createdBy={selectedProposal?.createdBy}
-          createdByAvatar={selectedProposal?.createdByAvatar}
-          timeRemaining={selectedProposal?.timeRemaining}
+          questionId={selectedProposal?.question_id}
         />
       )}
       <Header onConnect={() => setShowConnectModal(true)} />
@@ -68,25 +45,34 @@ const App = () => {
       <div className="proposalsTitle">
         <h3>Proposals</h3>
       </div>
-
       {!isPending && !error && (
         <main className="proposalsContainer">
-          {data?.map((proposal) => (
-            <ProposalCard
-              imageUrl={proposal.imageUrl}
-              category={proposal.category}
-              title={proposal.title}
-              description={proposal.description}
-              createdBy={proposal.createdBy}
-              createdByAvatar={proposal.createdByAvatar}
-              timeRemaining={proposal.timeRemaining}
-              key={proposal.id}
-              onClick={() => {
-                setSelectedProposal(proposal);
-                setShowModal(true);
-              }}
-            />
-          ))}
+          {questions?.map((item) => {
+            const createdByText =
+              item.category === "Team"
+                ? "Team"
+                : item.question_created_by.slice(0, 4) +
+                  "..." +
+                  item.question_created_by.slice(-4);
+
+            const timeRemaining = getTimeRemaining(item.end_voting_time);
+            return (
+              <ProposalCard
+                imageUrl={item.question_bg}
+                category={item.category}
+                title={item.question_title}
+                description={item.question_text}
+                createdBy={createdByText}
+                createdByAvatar={item.avatar}
+                timeRemaining={timeRemaining}
+                key={item.question_id}
+                onClick={() => {
+                  setSelectedProposal(item);
+                  setShowModal(true);
+                }}
+              />
+            );
+          })}
         </main>
       )}
       {isPending && <div>Loading...</div>}

@@ -47,7 +47,7 @@ const ProposalCard = ({
         <div className="time-remaining-card">
           <div className="clock-icon">
             <Clock size={16} />
-            <span>{timeRemaining} remaining</span>
+            <span>{timeRemaining}</span>
           </div>
           <button className="view-details" onClick={onClick}>
             View Details
