@@ -17,7 +17,7 @@
     border-radius: 8px;
     padding: 24px;
     width: 100%;
-    max-width: 320px;
+    max-width: 420px;
     color: white;
   }
 
@@ -29,10 +29,14 @@
   }
 
   .input-group {
+    width: 100%;
+    padding: 0px 30px;
     margin-bottom: 16px;
     display: flex ;
     flex-direction: column;
-    align-content: flex-start;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
 
   }
 
@@ -61,7 +65,9 @@
 
   .add-option {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
     color: var(--primary-color);
     background: none;
     border: none;

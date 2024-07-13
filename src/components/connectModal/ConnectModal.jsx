@@ -5,7 +5,7 @@ import Web3 from "web3";
 import { useWeb3Context } from "../../main";
 
 const ConnectModal = ({ onClose }) => {
-  const { web3State, updateWeb3State } = useWeb3Context();
+  const { updateWeb3State } = useWeb3Context();
 
   const connectionOptions = [
     {

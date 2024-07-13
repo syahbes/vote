@@ -68,15 +68,25 @@
   }
 }
 @media screen and (max-width: 768px) {
-  .modal-overlay {
+  .connect-modal-overlay {
     padding: 16px;
-  }
-  .modal-content {
-    padding: 16px;
-  }
+    .modal-content {
+      padding: 20px;
+      max-width: 90%;
+    }
 
-  .modal-title {
-    font-size: 18px;
-    margin-bottom: 12px;
+    .modal-title {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .connect-options-stack {
+      flex-direction: column;
+    }
+
+    .connect-option {
+      width: 100%;
+      height: auto;
+    }
   }
 }

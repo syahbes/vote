@@ -35,9 +35,10 @@ const VotingModal = ({ onClose, questionId }) => {
   const createdBy =
     fetchedSelectedProposal?.category === "Team"
       ? "Team"
-      : getFormattedWalletAddress(fetchedSelectedProposal?.created_by);
-  const timeRemaining = getTimeRemaining(fetchedSelectedProposal?.end_time);
-
+      : getFormattedWalletAddress(fetchedSelectedProposal?.question_created_by);
+  const timeRemaining = getTimeRemaining(
+    fetchedSelectedProposal?.end_voting_time
+  );
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-content">
