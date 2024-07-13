@@ -1,0 +1,82 @@
+.connect-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+
+  .modal-content {
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    padding: 24px;
+    width: 100%;
+    max-width: 690px;
+  }
+  .connect-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .modal-title {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .connect-options-stack {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+  }
+  .connect-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 150px;
+    border: 1px solid var(--card-border-color);
+    padding: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-family);
+    font-size: 16px;
+    font-weight: 500;
+    gap: 8px;
+  }
+  .connect-option:hover {
+    border-color: var(--primary-color);
+    background-color: var(--background-color-chip);
+  }
+  .wallet-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 12px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .modal-overlay {
+    padding: 16px;
+  }
+  .modal-content {
+    padding: 16px;
+  }
+
+  .modal-title {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+}
