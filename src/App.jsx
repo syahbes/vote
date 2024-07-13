@@ -9,11 +9,13 @@ import VotingModal from "./components/votingModal/VotingModal";
 import ConnectModal from "./components/connectModal/ConnectModal";
 
 import { useQuestions } from "./hooks/useQuestions";
-import { getTimeRemaining } from "./utils/utils";
+import { getFormattedWalletAddress, getTimeRemaining } from "./utils/utils";
+import SubmitModal from "./components/submitModal/SubmitModal";
 
 const App = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showVootingModal, setShowVootingModal] = useState(false);
   const [showConnectModal, setShowConnectModal] = useState(false);
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [selectedProposal, setSelectedProposal] = useState(null);
 
   const { isPending, error, data: questions } = useQuestions();
@@ -31,16 +33,28 @@ const App = () => {
           }}
         />
       )}
-      {showModal && (
-        <VotingModal
+      {showSubmitModal && (
+        <SubmitModal
           onClose={() => {
-            setShowModal(false);
+            setShowSubmitModal(false);
             setSelectedProposal(null);
           }}
           questionId={selectedProposal?.question_id}
         />
       )}
-      <Header onConnect={() => setShowConnectModal(true)} />
+      {showVootingModal && (
+        <VotingModal
+          onClose={() => {
+            setShowVootingModal(false);
+            setSelectedProposal(null);
+          }}
+          questionId={selectedProposal?.question_id}
+        />
+      )}
+      <Header
+        onConnect={() => setShowConnectModal(true)}
+        onSubmit={() => setShowSubmitModal(true)}
+      />
       <Title />
       <div className="proposalsTitle">
         <h3>Proposals</h3>
@@ -51,10 +65,7 @@ const App = () => {
             const createdByText =
               item.category === "Team"
                 ? "Team"
-                : item.question_created_by.slice(0, 4) +
-                  "..." +
-                  item.question_created_by.slice(-4);
-
+                : getFormattedWalletAddress(item.question_created_by);
             const timeRemaining = getTimeRemaining(item.end_voting_time);
             return (
               <ProposalCard
@@ -68,7 +79,7 @@ const App = () => {
                 key={item.question_id}
                 onClick={() => {
                   setSelectedProposal(item);
-                  setShowModal(true);
+                  setShowVootingModal(true);
                 }}
               />
             );

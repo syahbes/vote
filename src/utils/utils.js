@@ -18,3 +18,8 @@ export function getTimeRemaining(endTime) {
       return "Less than an hour remaining";
     }
   }
+
+export function getFormattedWalletAddress(address) {
+  if (!address) return "";
+  return `${address.slice(0, 4)}...${address.slice(-4)}`;
+}

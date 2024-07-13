@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Clock } from "lucide-react";
 import "./index.css";
-import { getTimeRemaining } from "../../utils/utils";
+import { getFormattedWalletAddress, getTimeRemaining } from "../../utils/utils";
 import { useSelectedProposal } from "../../hooks/useSelectedProposal";
 
 const VotingModal = ({ onClose, questionId }) => {
@@ -35,26 +35,30 @@ const VotingModal = ({ onClose, questionId }) => {
   const createdBy =
     fetchedSelectedProposal?.category === "Team"
       ? "Team"
-      : fetchedSelectedProposal?.question_created_by.slice(0, 6) +
-        "..." +
-        fetchedSelectedProposal?.question_created_by.slice(-4);
+      : getFormattedWalletAddress(fetchedSelectedProposal?.created_by);
   const timeRemaining = getTimeRemaining(fetchedSelectedProposal?.end_time);
 
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-content">
-        <h2 className="modal-title">{fetchedSelectedProposal?.question_text}</h2>
+        <h2 className="modal-title">
+          {fetchedSelectedProposal?.question_text}
+        </h2>
         <div className="meta">
           <div className="created-by">
             <span>Created By</span>
             <div className="created-by-avatar">
-              <img src={fetchedSelectedProposal?.avatar} alt="Team" className="team-icon" />
+              <img
+                src={fetchedSelectedProposal?.avatar}
+                alt="Team"
+                className="team-icon"
+              />
               <span>{createdBy}</span>
             </div>
           </div>
         </div>
         <div className="voting-options">
-          {fetchedSelectedProposal?.options.map((option) => (
+          {fetchedSelectedProposal?.options?.map((option) => (
             <button
               key={option?.option_id}
               className={`vote-option ${

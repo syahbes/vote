@@ -1,7 +1,8 @@
 import { useWeb3Context } from "../../main";
+import { getFormattedWalletAddress } from "../../utils/utils";
 import "./index.css";
 
-const Header = ({ onConnect }) => {
+const Header = ({ onConnect, onSubmit }) => {
   const { web3State } = useWeb3Context();
   return (
     <header>
@@ -9,13 +10,12 @@ const Header = ({ onConnect }) => {
         <img src={"/icons/logo.png"} alt="vote logo" />
       </div>
       <div className="buttonsStack">
-        <button id="submit">Submit Proposal</button>
+        <button id="submit" onClick={onSubmit}>
+          Submit Proposal
+        </button>
         <button id="connectVallet" onClick={onConnect}>
           {web3State?.isConnected
-            ? "Connected " +
-              web3State?.userAddress.slice(0, 4) +
-              "..." +
-              web3State?.userAddress.slice(-4)
+            ? "Connected " + getFormattedWalletAddress(web3State?.userAddress)
             : "Connect Wallet"}
         </button>
       </div>
