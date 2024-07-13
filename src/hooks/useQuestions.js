@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-const url = import.meta.env.VITE_SERVER_URL;
+import { getBaseUrl } from "../utils/utils";
+// const url = import.meta.env.VITE_SERVER_URL;
+const url = getBaseUrl();
 
 const fetchQuestions = async () => {
   const response = await fetch(`${url}/api/questions`);

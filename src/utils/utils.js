@@ -23,3 +23,7 @@ export function getFormattedWalletAddress(address) {
   if (!address) return "";
   return `${address.slice(0, 4)}...${address.slice(-4)}`;
 }
+
+export function getBaseUrl() {
+  return "https://votingserver-production.up.railway.app";
+}
