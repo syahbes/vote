@@ -32,12 +32,11 @@
     width: 100%;
     padding: 0px 30px;
     margin-bottom: 16px;
-    display: flex ;
+    display: flex;
     flex-direction: column;
     align-content: center;
     align-items: center;
     justify-content: center;
-
   }
 
   .input-group label {
@@ -94,12 +93,40 @@
   }
 }
 @media screen and (max-width: 768px) {
-  .submit-proposal {
-    padding: 16px;
-  }
+  .submit-modal-overlay {
+    .submit-proposal {
+      padding: 16px;
+      max-width: 90%;
+    }
 
-  .title {
-    font-size: 18px;
-    margin-bottom: 12px;
+    .title {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .input-group {
+      padding: 0px 16px;
+      margin-bottom: 12px;
+    }
+
+    .input-group label {
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .input {
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    .vote-button {
+      font-size: 14px;
+    }
+
+    .add-option {
+      font-size: 12px;
+      gap: 4px;
+      margin-bottom: 10px;
+    }
   }
 }

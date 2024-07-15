@@ -1,8 +1,8 @@
 // src/hooks/useSelectedProposal.js
 import { useQuery } from "@tanstack/react-query";
-import { getBaseUrl } from "../utils/utils";
-// const url = import.meta.env.VITE_SERVER_URL;
-const url = getBaseUrl();
+// import { getBaseUrl } from "../utils/utils";
+// const url = getBaseUrl();
+const url = import.meta.env.VITE_SERVER_URL;
 
 const fetchSelectedProposal = async (id) => {
   const response = await fetch(`${url}/api/questions/${id}`);

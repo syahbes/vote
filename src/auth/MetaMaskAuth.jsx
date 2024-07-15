@@ -4,6 +4,8 @@ import { useWeb3Context } from "../main";
 
 function MetaMaskAuth() {
   const { web3State, updateWeb3State } = useWeb3Context();
+  // const metamaskAppDeepLink =
+  //   `https://metamask.app.link/dapp/vote-draft-beta.vercel.app\\/`
 
   useEffect(() => {
     checkIfWalletIsConnected();
@@ -51,9 +53,15 @@ function MetaMaskAuth() {
         <p>Connected with address: {web3State?.userAddress}</p>
       ) : (
         <button onClick={connectWallet}>Connect to MetaMask</button>
-      )}
+              )}
     </div>
   );
 }
 
 export default MetaMaskAuth;
+
+/* <a href={metamaskAppDeepLink}>
+        <button className="btn">
+          connect wallet
+        </button>
+      </a> */
