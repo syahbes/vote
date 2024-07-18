@@ -102,7 +102,7 @@ const SubmitModal = ({ onClose }) => {
           className="vote-button"
           onClick={handleVote}
           disabled={addQuestionMutation.isPending}>
-          {addQuestionMutation.isPending ? "Submitting..." : "Vote"}
+          {addQuestionMutation.isPending ? "Submitting..." : "Submit"}
         </button>
       </div>
     </div>

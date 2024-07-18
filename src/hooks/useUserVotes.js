@@ -1,19 +1,18 @@
-// src/hooks/useSelectedProposal.js
 import { useQuery } from "@tanstack/react-query";
 import { getBaseUrl } from "../utils/utils";
 const url = getBaseUrl();
 //const url = import.meta.env.VITE_SERVER_URL;
 
-const fetchSelectedProposal = async (id) => {
-  const response = await fetch(`${url}/api/questions/${id}`);
+const fetchUserVotes = async (user_id) => {
+  const response = await fetch(`${url}/api/votes/user/${user_id}`);
   if (!response.ok) throw new Error("Network response was not ok");
+  console.log(response.json());
   return response.json();
 };
 
-export const useSelectedProposal = (id) => {
+export const useUserVotes = () => {
   return useQuery({
-    queryKey: ["selectedProposal", id],
-    queryFn: () => fetchSelectedProposal(id),
-    enabled: !!id,
+    queryKey: ["userVotes"],
+    queryFn: fetchUserVotes,
   });
 };

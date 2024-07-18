@@ -44,6 +44,24 @@ h3 {
   flex-direction: row;
   align-items: flex-start;
   padding: 20px;
+  max-width: 1337px;
+  margin: auto;
+  justify-content: space-between;
+  button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    /* hover */
+    transition: all 0.3s ease;
+    &:hover {
+      background-color: #fff;
+      color: var(--primary-color);
+    }
+  }
 }
 
 .proposalsContainer {
@@ -84,7 +102,5 @@ h3 {
     align-items: center;
     justify-content: flex-start;
     width: fit-content;
-    
-    
   }
 }

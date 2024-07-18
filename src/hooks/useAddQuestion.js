@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import { getBaseUrl } from "../utils/utils";
-//const url = getBaseUrl();
-const url = import.meta.env.VITE_SERVER_URL;
+import { getBaseUrl } from "../utils/utils";
+const url = getBaseUrl();
+//const url = import.meta.env.VITE_SERVER_URL;
 
 const addQuestion = async (newQuestion) => {
   const response = await fetch(`${url}/api/questions`, {

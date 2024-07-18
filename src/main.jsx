@@ -12,6 +12,7 @@ const Web3Provider = ({ children }) => {
   const [web3State, setWeb3State] = useState({
     isConnected: false,
     userAddress: null,
+    userVotes: [],
   });
 
   const updateWeb3State = (newState) => {

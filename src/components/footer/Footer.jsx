@@ -1,38 +1,57 @@
 import React from "react";
-import './index.css'
+import "./index.css";
 
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-logo">
-          <img src='/icons/logo.png' alt="tomi" className="logo" />
+          <a href="https://tomi.com">
+            <img src="/icons/logo.png" alt="tomi" className="logo" />
+          </a>
         </div>
         <div className="footer-links">
           <div className="link-column">
-            <a href="#">Browser</a>
-            <a href="#">Domains</a>
-            <a href="#">Wallet</a>
-            <a href="#">DAO</a>
+            <span className="link-title">Solutions</span>
+            <a href="https://tomi.com/browser" target="_blank" rel="noreferrer">
+              Browser
+            </a>
+            <a
+              href="https://domains.tomi.com/"
+              target="_blank"
+              rel="noreferrer">
+              Domains
+            </a>
+            <a href="https://tomi.com/wallet" target="_blank" rel="noreferrer">
+              Wallet
+            </a>
+            <a href="https://dao.tomi.com/" target="_blank" rel="noreferrer">
+              DAO
+            </a>
           </div>
           <div className="link-column">
-            <a href="#">X</a>
-            <a href="#">TG Announcement</a>
-            <a href="#">TG Group</a>
-            <a href="#">Discord</a>
-            <a href="#">Reddit</a>
-            <a href="#">Linkedin</a>
-            <a href="#">tomiArmy</a>
+            <span className="link-title">Community</span>
+            <a href="https://twitter.com/tomipioneers">X</a>
+            <a href="https://t.me/tomipioneers">TG Announcement</a>
+            <a href="https://t.me/tomi_official_chat">TG Group</a>
+            <a href="https://discord.com/invite/tomipioneers">Discord</a>
+            <a href="https://www.reddit.com/r/tomipioneers/?rdt=51853">
+              Reddit
+            </a>
+            <a href="https://tomiarmy.com/">TomiArmy</a>
           </div>
           <div className="link-column">
-            <a href="#">Blog</a>
-            <a href="#">Medium</a>
-            <a href="#">Youtube</a>
+            <span className="link-title">Education</span>
+            <a href="https://tomi.com/news">Blog</a>
+            <a href="https://medium.com/tomipioneers">Medium</a>
+            <a href="https://www.youtube.com/@tomipioneers">Youtube</a>
           </div>
         </div>
         <div className="email-us">
           <div className="mail-logo">
-            <img src='/icons/mail.png' alt="mail" />
+            <a href="mailto:tomiteam@proton.me">
+              <img src="/icons/mail.png" alt="mail" />
+            </a>
           </div>
           <h3>Email Us</h3>
           <div className="email-text">
@@ -41,7 +60,7 @@ const Footer = () => {
               email for prompt support and feedback.
             </p>
             <div className="vector-logo">
-              <img src='/icons/vector.png' alt="" />
+              <img src="/icons/vector.png" alt="" />
             </div>
           </div>
         </div>
@@ -49,9 +68,9 @@ const Footer = () => {
       <div className="footer-bottom">
         <p>© 2023 tomi, all rights reserved.</p>
         <div className="footer-legal">
-          <a href="#">Terms Of Use</a>
+          <a href="https://tomi.com/useragreement">Terms Of Use</a>
           <span className="separator">|</span>
-          <a href="#">Privacy Policy</a>
+          <a href="https://tomi.com/privacy">Privacy Policy</a>
         </div>
       </div>
     </footer>
