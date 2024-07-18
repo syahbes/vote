@@ -6,13 +6,13 @@ const url = getBaseUrl();
 const fetchUserVotes = async (user_id) => {
   const response = await fetch(`${url}/api/votes/user/${user_id}`);
   if (!response.ok) throw new Error("Network response was not ok");
-  console.log(response.json());
   return response.json();
 };
 
-export const useUserVotes = () => {
+export const useUserVotes = (userId) => {
   return useQuery({
-    queryKey: ["userVotes"],
-    queryFn: fetchUserVotes,
+    queryKey: ["userVotes", userId],
+    queryFn: () => fetchUserVotes(userId),
+    enabled: !!userId, // Only run the query if userId is provided
   });
 };

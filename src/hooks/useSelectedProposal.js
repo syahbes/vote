@@ -1,4 +1,3 @@
-// src/hooks/useSelectedProposal.js
 import { useQuery } from "@tanstack/react-query";
 import { getBaseUrl } from "../utils/utils";
 const url = getBaseUrl();

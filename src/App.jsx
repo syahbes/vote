@@ -14,10 +14,12 @@ import { useQuestions } from "./hooks/useQuestions";
 import { getFormattedWalletAddress, getTimeRemaining } from "./utils/utils";
 import { useWeb3Context } from "./main";
 import HisoryModal from "./components/historyModal/HistoryModal";
+import { useUserVotes } from "./hooks/useUserVotes";
 
 const App = () => {
   const { isPending, error, data: questions } = useQuestions();
   const { web3State } = useWeb3Context();
+  const { data: userVotes } = useUserVotes(web3State?.userAddress);
 
   //Modals
   const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -44,11 +46,7 @@ const App = () => {
       return;
     }
     //check if user has already voted
-    if (
-      web3State.userVotes.some(
-        (vote) => vote.question_id == proposal.question_id
-      )
-    ) {
+    if (userVotes.some((vote) => vote.question_id == proposal.question_id)) {
       setShowStatsModal(true);
       console.log("Already voted");
       return;

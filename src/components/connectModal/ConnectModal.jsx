@@ -3,13 +3,13 @@ import "./index.css";
 import { CircleX } from "lucide-react";
 import Web3 from "web3";
 import { useWeb3Context } from "../../main";
-import { getBaseUrl } from "../../utils/utils";
-const url = getBaseUrl();
-//const url = import.meta.env.VITE_SERVER_URL;
+
+
+const url = import.meta.env.VITE_SERVER_URL;
 
 const ConnectModal = ({ onClose }) => {
   const { updateWeb3State } = useWeb3Context();
-
+  
   const connectionOptions = [
     {
       text: "Metamask",
@@ -39,16 +39,6 @@ const ConnectModal = ({ onClose }) => {
       onClose();
     }
   };
-  const fetchUserVotes = async (userAddress) => {
-    try {
-      const response = await fetch(`${url}/api/votes/user/${userAddress}`);
-      if (!response.ok) throw new Error("Network response was not ok");
-      return response.json();
-    } catch (error) {
-      console.error("Error fetching user votes:", error);
-      return [];
-    }
-  };
 
   const connectWalletMetaMask = async () => {
     if (window.ethereum) {
@@ -60,11 +50,9 @@ const ConnectModal = ({ onClose }) => {
         const balance = await web3.eth.getBalance(accounts[0]);
         const balanceInEth = web3.utils.fromWei(balance, "ether");
         console.log("balanceInEth---\n", balanceInEth);
-        const userVotes = await fetchUserVotes(accounts[0]);
         updateWeb3State({
           isConnected: true,
           userAddress: accounts[0],
-          userVotes,
         });
 
         onClose();
