@@ -15,7 +15,7 @@ const Header = ({ onConnect, onSubmit }) => {
         </button>
         <button id="connectVallet" onClick={onConnect}>
           {web3State?.isConnected
-            ? "Connected " + getFormattedWalletAddress(web3State?.userAddress)
+            ? getFormattedWalletAddress(web3State?.userAddress)
             : "Connect Wallet"}
         </button>
       </div>
