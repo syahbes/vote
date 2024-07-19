@@ -4,12 +4,9 @@ import { CircleX } from "lucide-react";
 import Web3 from "web3";
 import { useWeb3Context } from "../../main";
 
-
-const url = import.meta.env.VITE_SERVER_URL;
-
 const ConnectModal = ({ onClose }) => {
   const { updateWeb3State } = useWeb3Context();
-  
+
   const connectionOptions = [
     {
       text: "Metamask",
@@ -34,6 +31,28 @@ const ConnectModal = ({ onClose }) => {
       icon: "/icons/wallets/walletconnect.png",
     },
   ];
+
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, []);
+  const checkIfWalletIsConnected = async () => {
+    if (window.ethereum) {
+      try {
+        // Request account access
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+        const web3 = new Web3(window.ethereum);
+        const accounts = await web3.eth.getAccounts();
+        if (accounts.length > 0) {
+          updateWeb3State({ isConnected: true, userAddress: accounts[0] });
+        }
+      } catch (error) {
+        console.error("User denied account access");
+        updateWeb3State({ isConnected: false, userAddress: null });
+      }
+    } else {
+      console.log("Please install MetaMask!");
+    }
+  };
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -41,7 +60,7 @@ const ConnectModal = ({ onClose }) => {
   };
 
   const connectWalletMetaMask = async () => {
-    if (window.ethereum) {
+    if (typeof window.ethereum !== "undefined") {
       try {
         // Request account access
         await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -63,7 +82,21 @@ const ConnectModal = ({ onClose }) => {
         onClose();
       }
     } else {
-      alert("Please install MetaMask!");
+      // Mobile device or desktop without Metamask
+      const metamaskAppDeepLink = `https://metamask.app.link/dapp/vote-draft-beta.vercel.app\\`;
+      const metamaskWebLink = "https://metamask.io/download.html";
+
+      if (
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        )
+      ) {
+        // Mobile device - open Metamask app or app store
+        window.location.href = metamaskAppDeepLink;
+      } else {
+        // Desktop without Metamask - open Metamask download page
+        window.open(metamaskWebLink, "_blank");
+      }
     }
   };
 
