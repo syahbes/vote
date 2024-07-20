@@ -10,7 +10,6 @@ const VotingModal = ({ show, onClose, questionId, openStatsModal }) => {
   const { web3State } = useWeb3Context();
   const [selectedOption, setSelectedOption] = useState(null);
   
-  if (!show) return null;
   
   const {
     isPending: isSelectedProposalLoading,
@@ -18,6 +17,8 @@ const VotingModal = ({ show, onClose, questionId, openStatsModal }) => {
     data: fetchedSelectedProposal,
   } = useSelectedProposal(questionId);
   const voteQuestionMutation = useVoteQuestion(web3State?.userAddress);
+  
+  if (!show) return null;
 
   if (isSelectedProposalLoading) {
     return <div>Loading...</div>;
