@@ -10,11 +10,13 @@ function getRandomCardBg() {
   return backgrounds[randomIndex];
 }
 
-const SubmitModal = ({ onClose }) => {
+const SubmitModal = ({ show, onClose }) => { 
   const { web3State } = useWeb3Context();
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
   const addQuestionMutation = useAddQuestion(); // Use the new hook
+
+  if (!show) return null;
 
   const addOption = () => {
     setOptions([...options, ""]);

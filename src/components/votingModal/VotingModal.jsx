@@ -6,10 +6,12 @@ import { useSelectedProposal } from "../../hooks/useSelectedProposal";
 import { useVoteQuestion } from "../../hooks/useVote";
 import { useWeb3Context } from "../../main";
 
-const VotingModal = ({ onClose, questionId, openStatsModal }) => {
+const VotingModal = ({ show, onClose, questionId, openStatsModal }) => {
   const { web3State } = useWeb3Context();
   const [selectedOption, setSelectedOption] = useState(null);
-
+  
+  if (!show) return null;
+  
   const {
     isPending: isSelectedProposalLoading,
     error: selectedProposalError,

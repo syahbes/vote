@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 
 import Header from "./components/header/Header";
@@ -9,138 +9,106 @@ import SubmitModal from "./components/submitModal/SubmitModal";
 import ConnectModal from "./components/connectModal/ConnectModal";
 import VotingModal from "./components/votingModal/VotingModal";
 import StatsModal from "./components/statsModal/StatsModal";
+import HistoryModal from "./components/historyModal/HistoryModal";
 
 import { useQuestions } from "./hooks/useQuestions";
-import { getFormattedWalletAddress, getTimeRemaining } from "./utils/utils";
-import { useWeb3Context } from "./main";
-import HisoryModal from "./components/historyModal/HistoryModal";
 import { useUserVotes } from "./hooks/useUserVotes";
-import MetaMaskAuth from "./auth/MetaMaskAuth";
+import { useWeb3Context } from "./main";
+import { useModals } from "./hooks/useModals";
+import { getFormattedWalletAddress, getTimeRemaining } from "./utils/utils";
 
 const App = () => {
   const { isPending, error, data: questions } = useQuestions();
   const { web3State } = useWeb3Context();
   const { data: userVotes } = useUserVotes(web3State?.userAddress);
-
-  //Modals
-  const [showSubmitModal, setShowSubmitModal] = useState(false);
-  const [showConnectModal, setShowConnectModal] = useState(false);
-  const [showVotingModal, setShowVotingModal] = useState(false);
-  const [showStatsModal, setShowStatsModal] = useState(false);
-  const [showHistoryModal, setShowHistoryModal] = useState(false);
-
   const [selectedProposal, setSelectedProposal] = useState(null);
+
+  const {
+    showSubmitModal,
+    showConnectModal,
+    showVotingModal,
+    showStatsModal,
+    showHistoryModal,
+    openSubmitModal,
+    openConnectModal,
+    openVotingModal,
+    openStatsModal,
+    openHistoryModal,
+    closeAllModals
+  } = useModals();
+
   const handleSubmit = () => {
-    if (web3State.isConnected) {
-      setShowSubmitModal(true);
-    } else {
-      alert("Please connect your wallet");
-    }
+    web3State.isConnected ? openSubmitModal() : alert("Please connect your wallet");
   };
+
   const handleShowDetailsClick = (proposal) => {
     if (!web3State.isConnected) {
       alert("Please connect your wallet");
       return;
     }
-    if (proposal.timeRemaining == "Voting ended") {
-      setShowStatsModal(true);
-      return;
-    }
-    //check if user has already voted
-    if (userVotes.some((vote) => vote.question_id == proposal.question_id)) {
-      setShowStatsModal(true);
-      console.log("Already voted");
-      return;
-    }
+    
+    setSelectedProposal(proposal);
 
-    setShowVotingModal(true);
+    if (proposal.timeRemaining === "Voting ended" || 
+        userVotes.some(vote => vote.question_id === proposal.question_id)) {
+      openStatsModal();
+    } else {
+      openVotingModal();
+    }
   };
+
+  const renderProposals = () => (
+    <main className="proposalsContainer">
+      {questions?.map((item) => (
+        <ProposalCard
+          key={item.question_id}
+          imageUrl={item.question_bg}
+          category={item.category}
+          title={item.question_title}
+          description={item.question_text}
+          createdBy={item.category === "Team" ? "Team" : getFormattedWalletAddress(item.question_created_by)}
+          createdByAvatar={item.avatar}
+          timeRemaining={getTimeRemaining(item.end_voting_time)}
+          onClick={() => handleShowDetailsClick({ ...item, timeRemaining: getTimeRemaining(item.end_voting_time) })}
+        />
+      ))}
+    </main>
+  );
 
   return (
     <div className="app">
-      {showHistoryModal && (
-        <HisoryModal
-          onClose={() => {
-            setShowHistoryModal(false);
-          }}
-        />
-      )}
-      {showSubmitModal && (
-        <SubmitModal
-          onClose={() => {
-            setShowSubmitModal(false);
-            setSelectedProposal(null);
-          }}
-          questionId={selectedProposal?.question_id}
-        />
-      )}
-      {showConnectModal && (
-        <ConnectModal
-          onClose={() => {
-            setShowConnectModal(false);
-          }}
-        />
-      )}
-      {showVotingModal && (
-        <VotingModal
-          onClose={() => {
-            setShowVotingModal(false);
-            // setSelectedProposal(null);
-          }}
-          openStatsModal={() => setShowStatsModal(true)}
-          questionId={selectedProposal?.question_id}
-        />
-      )}
-
-      {showStatsModal && (
-        <StatsModal
-          onClose={() => {
-            setShowStatsModal(false);
-            setSelectedProposal(null);
-          }}
-          questionId={selectedProposal?.question_id}
-        />
-      )}
-      <Header
-        onConnect={() => setShowConnectModal(true)}
-        onSubmit={handleSubmit}
+      <HistoryModal show={showHistoryModal} onClose={closeAllModals} />
+      <SubmitModal 
+        show={showSubmitModal} 
+        onClose={closeAllModals}
+        questionId={selectedProposal?.question_id} 
       />
+      <ConnectModal show={showConnectModal} onClose={closeAllModals} />
+      <VotingModal 
+        show={showVotingModal} 
+        onClose={closeAllModals}
+        openStatsModal={openStatsModal}
+        questionId={selectedProposal?.question_id}
+      />
+      <StatsModal 
+        show={showStatsModal} 
+        onClose={() => {
+          closeAllModals();
+          setSelectedProposal(null);
+        }}
+        questionId={selectedProposal?.question_id}
+      />
+
+      <Header onConnect={openConnectModal} onSubmit={handleSubmit} />
       <Title />
-      <MetaMaskAuth />
       <div className="proposalsTitle">
         <h3>Proposals</h3>
-        <button onClick={() => setShowHistoryModal(true)}>View Hisory</button>
+        <button onClick={openHistoryModal}>View History</button>
       </div>
-      {!isPending && !error && (
-        <main className="proposalsContainer">
-          {questions?.map((item) => {
-            const createdByText =
-              item.category === "Team"
-                ? "Team"
-                : getFormattedWalletAddress(item.question_created_by);
-            const timeRemaining = getTimeRemaining(item.end_voting_time);
-            item.timeRemaining = timeRemaining;
-            return (
-              <ProposalCard
-                imageUrl={item.question_bg}
-                category={item.category}
-                title={item.question_title}
-                description={item.question_text}
-                createdBy={createdByText}
-                createdByAvatar={item.avatar}
-                timeRemaining={timeRemaining}
-                key={item.question_id}
-                onClick={() => {
-                  setSelectedProposal(item);
-                  handleShowDetailsClick(item);
-                }}
-              />
-            );
-          })}
-        </main>
-      )}
+
       {isPending && <div>Loading...</div>}
       {error && <div>Error: {error.message}</div>}
+      {!isPending && !error && renderProposals()}
 
       <Footer />
     </div>

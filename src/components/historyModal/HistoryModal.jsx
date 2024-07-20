@@ -3,9 +3,15 @@ import "./index.css";
 import { useWeb3Context } from "../../main";
 import { useUserVotes } from "../../hooks/useUserVotes";
 
-const HistoryModal = ({ onClose }) => {
+const HistoryModal = ({ show, onClose }) => {
   const { web3State } = useWeb3Context();
-  const { data: userVotes, isLoading, error } = useUserVotes(web3State?.userAddress);
+  const {
+    data: userVotes,
+    isLoading,
+    error,
+  } = useUserVotes(web3State?.userAddress);
+  
+  if (!show) return null;
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {

@@ -4,12 +4,14 @@ import "./index.css";
 import { getFormattedWalletAddress, getTimeRemaining } from "../../utils/utils";
 import { useSelectedProposal } from "../../hooks/useSelectedProposal";
 
-const StatsgModal = ({ onClose, questionId }) => {
+const StatsgModal = ({ show, onClose, questionId }) => {
   const {
     isPending: isSelectedProposalLoading,
     error: selectedProposalError,
     data: fetchedSelectedProposal,
   } = useSelectedProposal(questionId);
+  
+  if (!show) return null;
 
   if (isSelectedProposalLoading) {
     return <div>Loading...</div>;
