@@ -15,6 +15,7 @@ import { getFormattedWalletAddress, getTimeRemaining } from "./utils/utils";
 import { useWeb3Context } from "./main";
 import HisoryModal from "./components/historyModal/HistoryModal";
 import { useUserVotes } from "./hooks/useUserVotes";
+import MetaMaskAuth from "./auth/MetaMaskAuth";
 
 const App = () => {
   const { isPending, error, data: questions } = useQuestions();
@@ -105,6 +106,7 @@ const App = () => {
         onSubmit={handleSubmit}
       />
       <Title />
+      <MetaMaskAuth />
       <div className="proposalsTitle">
         <h3>Proposals</h3>
         <button onClick={() => setShowHistoryModal(true)}>View Hisory</button>

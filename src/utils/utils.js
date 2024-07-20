@@ -25,5 +25,6 @@ export function getFormattedWalletAddress(address) {
 }
 
 export function getBaseUrl() {
-  return "https://votingserver-production.up.railway.app";
+  return import.meta.env.VITE_SERVER_URL;
+  //return "https://votingserver-production.up.railway.app";
 }

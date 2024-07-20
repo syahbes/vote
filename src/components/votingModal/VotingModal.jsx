@@ -15,7 +15,7 @@ const VotingModal = ({ onClose, questionId, openStatsModal }) => {
     error: selectedProposalError,
     data: fetchedSelectedProposal,
   } = useSelectedProposal(questionId);
-  const voteQuestionMutation = useVoteQuestion();
+  const voteQuestionMutation = useVoteQuestion(web3State?.userAddress);
 
   if (isSelectedProposalLoading) {
     return <div>Loading...</div>;
@@ -35,10 +35,8 @@ const VotingModal = ({ onClose, questionId, openStatsModal }) => {
       alert("Please connect your wallet");
       return;
     }
-    const user_id = web3State?.userAddress;
     try {
       await voteQuestionMutation.mutateAsync({
-        user_id: user_id,
         option_id: selectedOption.option_id,
       });
       console.log("Voted successfully");

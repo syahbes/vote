@@ -1,11 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 import { getBaseUrl } from "../utils/utils";
-const url = getBaseUrl();
-//const url = import.meta.env.VITE_SERVER_URL;
 
-const fetchUserVotes = async (user_id) => {
-  const response = await fetch(`${url}/api/votes/user/${user_id}`);
-  if (!response.ok) throw new Error("Network response was not ok");
+const url = getBaseUrl();
+const token = localStorage.getItem("authToken");
+
+const fetchUserVotes = async () => {
+  const response = await fetch(`${url}/api/votes/user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    if (response.status === 401) {
+      // Handle unauthorized access (e.g., token expired)
+      throw new Error("Unauthorized access. Please log in again.");
+    }
+    throw new Error("Failed to fetch user votes");
+  }
   return response.json();
 };
 

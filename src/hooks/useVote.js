@@ -1,33 +1,38 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getBaseUrl } from "../utils/utils";
+
 const url = getBaseUrl();
-//const url = import.meta.env.VITE_SERVER_URL;
+const token = localStorage.getItem("authToken");
 
 const voteQuestion = async (voteData) => {
   const response = await fetch(`${url}/api/votes`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(voteData),
   });
 
   if (!response.ok) {
-    throw new Error('Failed to vote on question');
+    if (response.status === 401) {
+      // Handle unauthorized access (e.g., token expired)
+      throw new Error("Unauthorized access. Please log in again.");
+    }
+    throw new Error("Failed to vote on question");
   }
-
   return response.json();
 };
 
-export const useVoteQuestion = (userId) => {
+export const useVoteQuestion = (user_id) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: voteQuestion,
     onSuccess: () => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ['selectedProposal'] });
-      queryClient.invalidateQueries({ queryKey: ['userVotes', userId] });
+      queryClient.invalidateQueries({ queryKey: ["selectedProposal"] });
+      queryClient.invalidateQueries({ queryKey: ["userVotes", user_id] });
     },
   });
 };

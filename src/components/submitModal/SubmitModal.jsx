@@ -37,8 +37,6 @@ const SubmitModal = ({ onClose }) => {
       alert("Please connect your wallet");
       return;
     }
-    const createdBy = web3State?.userAddress;
-
     const endVotingTimestamp = Date.now() + 5 * 24 * 60 * 60 * 1000;
     const endVotingDate = new Date(endVotingTimestamp);
     const end_voting_time = endVotingDate
@@ -50,14 +48,12 @@ const SubmitModal = ({ onClose }) => {
       question_text: question,
       question_title: question.split(" ").slice(0, 3).join(" "),
       question_bg: getRandomCardBg(),
-      question_created_by: createdBy,
       options: options.map((option) => ({ option_text: option })),
       end_voting_time: end_voting_time,
     };
 
     try {
       await addQuestionMutation.mutateAsync(newQuestion);
-      console.log("Question added successfully");
       setQuestion("");
       setOptions(["", ""]);
       onClose();
