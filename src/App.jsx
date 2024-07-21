@@ -23,13 +23,16 @@ import {
   handleAuthentication,
 } from "./utils/utils";
 
-const sign_message = "Sign this message to authenticate with Wallet Connect to Tomi";
+const sign_message =
+  "Sign this message to authenticate with Wallet Connect to Tomi";
 
 const App = () => {
   const { isPending, error, data: questions } = useQuestions();
   const { web3State, updateWeb3State } = useWeb3Context();
   const { data: signMessageData, signMessage } = useSignMessage();
-  const { data: userVotes, refetch: refetchUserVotes } = useUserVotes(web3State?.userAddress);
+  const { data: userVotes, refetch: refetchUserVotes } = useUserVotes(
+    web3State?.userAddress
+  );
   const queryClient = useQueryClient();
   const [selectedProposal, setSelectedProposal] = useState(null);
   const { address, isConnected } = useAccount();
@@ -85,8 +88,6 @@ const App = () => {
   const handleSuccessfulConnect = async () => {
     try {
       await signMessage({ message: sign_message });
-      updateWeb3State({ isConnected: true, userAddress: address });
-      refetchUserVotes();
     } catch (err) {
       console.error("Error signing message:", err);
       updateWeb3State({ isConnected: false, userAddress: null, userVotes: [] });
@@ -94,7 +95,9 @@ const App = () => {
   };
 
   const handleSubmit = () => {
-    web3State.isConnected ? openSubmitModal() : alert("Please connect your wallet");
+    web3State.isConnected
+      ? openSubmitModal()
+      : alert("Please connect your wallet");
   };
 
   const handleShowDetailsClick = (proposal) => {
