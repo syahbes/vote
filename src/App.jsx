@@ -48,9 +48,6 @@ const App = () => {
   } = useModals();
 
   useEffect(() => {
-    console.log("------->", web3State);
-    console.log("--useEffect--->", address);
-    console.log("--useEffect2--->", isConnected);
     if (isConnected) {
       handleSuccessfulConnect();
     } else {
