@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CircleX } from "lucide-react";
 import Web3 from "web3";
 import { useWeb3Context } from "../../main";
-import { getBaseUrl } from "../../utils/utils";
+import { getBaseUrl, handleAuthentication } from "../../utils/utils";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import "./index.css";
 
 const APP_URL = "vote-draft-beta.vercel.app";
@@ -27,34 +28,9 @@ const CONNECTION_OPTIONS = [
 
 const ConnectModal = ({ show, onClose }) => {
   const { updateWeb3State } = useWeb3Context();
-  
+  const { open } = useWeb3Modal();
+
   if (!show) return null;
-
-  const handleAuthentication = async (accounts, message, signature) => {
-    try {
-      const response = await fetch(`${getBaseUrl()}/api/auth/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address: accounts[0], message, signature }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      if (data.authenticated && data.token) {
-        localStorage.setItem("authToken", data.token);
-        return data;
-      }
-
-      console.log("Authentication failed or token missing");
-      return null;
-    } catch (error) {
-      console.error("Error during authentication:", error);
-      throw error;
-    }
-  };
 
   const connectMetamask = async () => {
     if (typeof window.ethereum === "undefined") {
@@ -70,9 +46,13 @@ const ConnectModal = ({ show, onClose }) => {
       const message = "Sign this message to authenticate with Metamask to Tomi";
       const signature = await web3.eth.personal.sign(message, accounts[0], "");
 
-      const result = await handleAuthentication(accounts, message, signature);
+      const result = await handleAuthentication(
+        accounts[0],
+        message,
+        signature
+      );
       if (result?.authenticated) {
-        console.log("User authenticated successfully");
+        console.log("User authenticated successfully [Metamask]");
         updateWeb3State({ isConnected: true, userAddress: accounts[0] });
         onClose();
       } else {
@@ -105,8 +85,9 @@ const ConnectModal = ({ show, onClose }) => {
     alert("tomiWallet connection not implemented");
   };
 
-  const connectWalletConnect = () => {
-    alert("WalletConnect connection not implemented");
+  const connectWalletConnect = async () => {
+    onClose();
+    await open();
   };
 
   const connectionActions = {
