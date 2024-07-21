@@ -2,9 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getBaseUrl } from "../utils/utils";
 
 const url = getBaseUrl();
-const token = localStorage.getItem("authToken");
 
-const fetchUserVotes = async () => {
+const fetchUserVotes = async ({ queryKey }) => {
+  const userId = queryKey[1];
+  const token = localStorage.getItem("authToken");
   const response = await fetch(`${url}/api/votes/user`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -13,7 +14,6 @@ const fetchUserVotes = async () => {
   });
   if (!response.ok) {
     if (response.status === 401) {
-      // Handle unauthorized access (e.g., token expired)
       throw new Error("Unauthorized access. Please log in again.");
     }
     throw new Error("Failed to fetch user votes");
@@ -24,7 +24,7 @@ const fetchUserVotes = async () => {
 export const useUserVotes = (userId) => {
   return useQuery({
     queryKey: ["userVotes", userId],
-    queryFn: () => fetchUserVotes(userId),
+    queryFn: fetchUserVotes,
     enabled: !!userId, // Only run the query if userId is provided
   });
 };
