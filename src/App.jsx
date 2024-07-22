@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useAccount, useSignMessage } from "wagmi";
+import { useAccount, useAccountEffect, useSignMessage } from "wagmi";
 import { useQueryClient } from "@tanstack/react-query";
 import "./App.css";
 
@@ -63,6 +63,22 @@ const App = () => {
       queryClient.removeQueries(["userVotes"]); // Remove the userVotes query when logging out
     }
   }, [isConnected, address]);
+
+  useAccountEffect({
+    onConnect(data) {
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        updateWeb3State({ isConnected: true, userAddress: data.address });
+      } else {
+        console.log('Connected!', data)
+        handleSuccessfulConnect();
+      }
+    },
+    onDisconnect() {
+      console.log('Disconnected!')
+      updateWeb3State({ isConnected: false, userAddress: null });
+    },
+  })
 
   useEffect(() => {
     if (signMessageData) {

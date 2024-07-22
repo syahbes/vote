@@ -126,4 +126,8 @@
     font-size: 12px;
     margin-bottom: 12px;
   }
+  .vote-option {
+    width: 100% !important;
+    padding: 30px 10px !important;
+  }
 }

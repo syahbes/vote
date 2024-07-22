@@ -91,6 +91,10 @@
     cursor: pointer;
     font-size: 16px;
   }
+  .vote-button:disabled {
+    cursor: not-allowed;
+    background-color: #a0a0a0;
+  }
 }
 @media screen and (max-width: 768px) {
   .submit-modal-overlay {

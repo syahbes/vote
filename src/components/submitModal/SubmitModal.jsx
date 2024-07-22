@@ -63,6 +63,10 @@ const SubmitModal = ({ show, onClose }) => {
 
   if (!show) return null;
 
+  const validToSubmit = () => {
+    return question.length > 0 && options.every((option) => option.length > 0);
+  };
+
   const addOption = () => {
     setOptions([...options, ""]);
   };
@@ -159,7 +163,7 @@ const SubmitModal = ({ show, onClose }) => {
         <button
           className="vote-button"
           onClick={handleVote}
-          disabled={addQuestionMutation.isPending}>
+          disabled={addQuestionMutation.isPending || !validToSubmit()}>
           {addQuestionMutation.isPending ? "Submitting..." : "Submit"}
         </button>
       </div>

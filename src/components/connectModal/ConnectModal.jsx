@@ -6,7 +6,7 @@ import { getBaseUrl, handleAuthentication } from "../../utils/utils";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import "./index.css";
 
-const APP_URL = "vote-draft-beta.vercel.app";
+const APP_URL = "tomi-vote.vercel.app";
 
 const CONNECTION_OPTIONS = [
   {
