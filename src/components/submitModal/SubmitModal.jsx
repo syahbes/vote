@@ -4,16 +4,61 @@ import { SquarePlus } from "lucide-react";
 import { useWeb3Context } from "../../main";
 import { useAddQuestion } from "../../hooks/useAddQuestion"; // Import the new hook
 
+const CATEGORIES = [
+  {
+    name: "Browser",
+    bg: "1.png",
+  },
+  {
+    name: "Domains",
+    bg: "2.png",
+  },
+  {
+    name: "Wallet",
+    bg: "3.png",
+  },
+  {
+    name: "Storage",
+    bg: "4.png",
+  },
+  {
+    name: "Depin",
+    bg: "5.png",
+  },
+  {
+    name: "General",
+    bg: "6.png",
+  },
+  {
+    name: "Website",
+    bg: "7.png",
+  },
+  {
+    name: "CDN",
+    bg: "8.png",
+  },
+  {
+    name: "Compute",
+    bg: "9.png",
+  },
+];
+
 function getRandomCardBg() {
   const backgrounds = ["/cardBg/cardbga.png", "/cardBg/cardbgb.png"];
   const randomIndex = Math.floor(Math.random() * backgrounds.length);
   return backgrounds[randomIndex];
 }
 
-const SubmitModal = ({ show, onClose }) => { 
+const getCategoryBg = (categoryName) => {
+  const category = CATEGORIES.find((cat) => cat.name === categoryName);
+  return category ? `/cardBg/${category.bg}` : getRandomCardBg();
+};
+
+const SubmitModal = ({ show, onClose }) => {
   const { web3State } = useWeb3Context();
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
+  const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0].name);
   const addQuestionMutation = useAddQuestion(); // Use the new hook
 
   if (!show) return null;
@@ -49,7 +94,7 @@ const SubmitModal = ({ show, onClose }) => {
     const newQuestion = {
       question_text: question,
       question_title: question.split(" ").slice(0, 3).join(" "),
-      question_bg: getRandomCardBg(),
+      question_bg: getCategoryBg(selectedCategory),
       options: options.map((option) => ({ option_text: option })),
       end_voting_time: end_voting_time,
     };
@@ -95,6 +140,21 @@ const SubmitModal = ({ show, onClose }) => {
             Add option
             <SquarePlus size={16} />
           </button>
+          <div
+            className="input-group"
+            style={{ marginTop: "20px", padding: "0px" }}>
+            <label>Category</label>
+            <select
+              className="input"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}>
+              {CATEGORIES.map((category) => (
+                <option key={category.name} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
         <button
           className="vote-button"
