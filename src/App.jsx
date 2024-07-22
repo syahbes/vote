@@ -51,8 +51,13 @@ const App = () => {
   } = useModals();
 
   useEffect(() => {
+    const token = localStorage.getItem("authToken");
     if (isConnected) {
-      handleSuccessfulConnect();
+      if (token) {
+        updateWeb3State({ isConnected: true, userAddress: address });
+      } else {
+        handleSuccessfulConnect();
+      }
     } else {
       updateWeb3State({ isConnected: false, userAddress: null, userVotes: [] });
       queryClient.removeQueries(["userVotes"]); // Remove the userVotes query when logging out
