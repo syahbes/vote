@@ -69,7 +69,7 @@ function MetaMaskAuth() {
             signature
           );
           if (result.authenticated) {
-            console.log("User authenticated successfully");
+            console.log("User authenticated successfully [Metamask]");
             // Proceed with authenticated user flow
             updateWeb3State({
               isConnected: true,
