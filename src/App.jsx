@@ -59,26 +59,28 @@ const App = () => {
         handleSuccessfulConnect();
       }
     } else {
-      updateWeb3State({ isConnected: false, userAddress: null, userVotes: [] });
+      updateWeb3State({ isConnected: false, userAddress: null });
+      //remove token
+      localStorage.removeItem("authToken");
       queryClient.removeQueries(["userVotes"]); // Remove the userVotes query when logging out
     }
   }, [isConnected, address]);
 
-  useAccountEffect({
-    onConnect(data) {
-      const token = localStorage.getItem("authToken");
-      if (token) {
-        updateWeb3State({ isConnected: true, userAddress: data.address });
-      } else {
-        console.log('Connected!', data)
-        handleSuccessfulConnect();
-      }
-    },
-    onDisconnect() {
-      console.log('Disconnected!')
-      updateWeb3State({ isConnected: false, userAddress: null });
-    },
-  })
+  // useAccountEffect({
+  //   onConnect(data) {
+  //     const token = localStorage.getItem("authToken");
+  //     if (token) {
+  //       updateWeb3State({ isConnected: true, userAddress: data.address });
+  //     } else {
+  //       console.log('Connected!', data)
+  //       handleSuccessfulConnect();
+  //     }
+  //   },
+  //   onDisconnect() {
+  //     console.log('Disconnected!')
+  //     updateWeb3State({ isConnected: false, userAddress: null });
+  //   },
+  // })
 
   useEffect(() => {
     if (signMessageData) {
