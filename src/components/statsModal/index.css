@@ -56,13 +56,13 @@
 
 .vote-option {
   position: relative;
-  height: 36px;
+  height: 40px;
   background-color: transparent;
   border-radius: 18px;
   overflow: hidden;
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  padding: 20px 16px;
   border: 1px solid white;
 }
 
