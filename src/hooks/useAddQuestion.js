@@ -2,9 +2,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getBaseUrl } from "../utils/utils";
 
 const url = getBaseUrl();
-const token = localStorage.getItem("authToken");
 
 const addQuestion = async (newQuestion) => {
+  const token = localStorage.getItem("authToken");
   const response = await fetch(`${url}/api/question`, {
     method: 'POST',
     headers: {

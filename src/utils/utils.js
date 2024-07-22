@@ -43,6 +43,7 @@ export async function handleAuthentication(address, message, signature) {
 
     const data = await response.json();
     if (data.authenticated && data.token) {
+      console.log("--> Authenticated successfully");
       localStorage.setItem("authToken", data.token);
       return data;
     }

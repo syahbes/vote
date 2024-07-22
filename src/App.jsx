@@ -66,6 +66,7 @@ const App = () => {
     }
   }, [isConnected, address]);
 
+  // TODO: remove
   // useAccountEffect({
   //   onConnect(data) {
   //     const token = localStorage.getItem("authToken");
