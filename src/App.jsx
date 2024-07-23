@@ -68,7 +68,9 @@ const App = () => {
 
   useEffect(() => {
     if (isConnected) {
+      console.log("Connected!", address);
       updateWeb3State({ isConnected: true, userAddress: address });
+      handleSuccessfulConnect();
     } else {
       updateWeb3State({ isConnected: false, userAddress: null });
     }
