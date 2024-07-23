@@ -50,7 +50,6 @@ const App = () => {
     },
     onDisconnect() {
       console.log("useAccountEffect: Disconnected!");
-      localStorage.removeItem("authToken");
     },
   });
 
