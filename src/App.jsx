@@ -66,22 +66,30 @@ const App = () => {
   //   }
   // }, [isConnected, address]);
 
-  
+  useEffect(() => {
+    if (isConnected) {
+      updateWeb3State({ isConnected: true, userAddress: address });
+    } else {
+      updateWeb3State({ isConnected: false, userAddress: null });
+    }
+  }, [isConnected]);
+
   useAccountEffect({
     onConnect(data) {
+      alert(`Connected to ${getFormattedWalletAddress(data.address)}`);
       const token = localStorage.getItem("authToken");
       if (token) {
         updateWeb3State({ isConnected: true, userAddress: data.address });
       } else {
-        console.log('Connected!', data)
+        console.log("Connected!", data);
         handleSuccessfulConnect();
       }
     },
     onDisconnect() {
-      console.log('Disconnected!')
+      console.log("Disconnected!");
       updateWeb3State({ isConnected: false, userAddress: null });
     },
-  })
+  });
 
   useEffect(() => {
     if (signMessageData) {
