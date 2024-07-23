@@ -12,7 +12,7 @@ const addQuestion = async (newQuestion) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(newQuestion),
-  });
+  }); 
 
   if (!response.ok) {
     if (response.status === 401) {

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useAccount, useAccountEffect, useSignMessage } from "wagmi";
-import { useQueryClient } from "@tanstack/react-query";
 import "./App.css";
 
 import Header from "./components/header/Header";
@@ -8,14 +7,12 @@ import Title from "./components/title/Title";
 import ProposalCard from "./components/proposalCard/ProposalCard";
 import Footer from "./components/footer/Footer";
 import SubmitModal from "./components/submitModal/SubmitModal";
-import ConnectModal from "./components/connectModal/ConnectModal";
 import VotingModal from "./components/votingModal/VotingModal";
 import StatsModal from "./components/statsModal/StatsModal";
 import HistoryModal from "./components/historyModal/HistoryModal";
 
 import { useQuestions } from "./hooks/useQuestions";
 import { useUserVotes } from "./hooks/useUserVotes";
-import { useWeb3Context } from "./main";
 import { useModals } from "./hooks/useModals";
 import {
   getFormattedWalletAddress,
@@ -28,87 +25,51 @@ const sign_message =
 
 const App = () => {
   const { isPending, error, data: questions } = useQuestions();
-  const { web3State, updateWeb3State } = useWeb3Context();
   const { data: signMessageData, signMessage } = useSignMessage();
-  const { data: userVotes, refetch: refetchUserVotes } = useUserVotes(
-    web3State?.userAddress
-  );
-  const queryClient = useQueryClient();
-  const [selectedProposal, setSelectedProposal] = useState(null);
   const { address, isConnected } = useAccount();
+  const { data: userVotes, refetch: refetchUserVotes } = useUserVotes(address);
+  const [selectedProposal, setSelectedProposal] = useState(null);
   const {
     showSubmitModal,
-    showConnectModal,
     showVotingModal,
     showStatsModal,
     showHistoryModal,
     openSubmitModal,
-    openConnectModal,
     openVotingModal,
     openStatsModal,
     openHistoryModal,
     closeAllModals,
   } = useModals();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("authToken");
-  //   if (isConnected) {
-  //     if (token) {
-  //       updateWeb3State({ isConnected: true, userAddress: address });
-  //     } else {
-  //       handleSuccessfulConnect();
-  //     }
-  //   } else {
-  //     updateWeb3State({ isConnected: false, userAddress: null });
-  //     //remove token
-  //     localStorage.removeItem("authToken");
-  //     queryClient.removeQueries(["userVotes"]); // Remove the userVotes query when logging out
-  //   }
-  // }, [isConnected, address]);
-
-  useEffect(() => {
-    if (isConnected) {
-      console.log("Connected!", address);
-      updateWeb3State({ isConnected: true, userAddress: address });
-      handleSuccessfulConnect();
-    } else {
-      updateWeb3State({ isConnected: false, userAddress: null });
-    }
-  }, [isConnected]);
-
   useAccountEffect({
     onConnect(data) {
       const token = localStorage.getItem("authToken");
-      if (token) {
-        updateWeb3State({ isConnected: true, userAddress: data.address });
-      } else {
-        console.log("Connected!", data);
+      if (!token) {
         handleSuccessfulConnect();
       }
     },
     onDisconnect() {
-      console.log("Disconnected!");
-      updateWeb3State({ isConnected: false, userAddress: null });
+      console.log("useAccountEffect: Disconnected!");
+      localStorage.removeItem("authToken");
     },
   });
 
   useEffect(() => {
     if (signMessageData) {
-      authenticateUser();
+      getTokenFromServerBySign();
     }
   }, [signMessageData]);
 
-  const authenticateUser = async () => {
+  const getTokenFromServerBySign = async () => {
     try {
       const result = await handleAuthentication(
         address,
         sign_message,
         signMessageData
       );
-
+      console.log("result: ", result);
       if (result?.authenticated) {
         console.log("User authenticated successfully [WalletConnect]");
-        updateWeb3State({ isConnected: true, userAddress: address });
         refetchUserVotes();
       } else {
         console.log("Authentication failed");
@@ -120,27 +81,22 @@ const App = () => {
 
   const handleSuccessfulConnect = async () => {
     try {
-      await signMessage({ message: sign_message });
+      signMessage({ message: sign_message });
     } catch (err) {
       console.error("Error signing message:", err);
-      updateWeb3State({ isConnected: false, userAddress: null, userVotes: [] });
     }
   };
 
   const handleSubmit = () => {
-    web3State.isConnected
-      ? openSubmitModal()
-      : alert("Please connect your wallet");
+    isConnected ? openSubmitModal() : alert("Please connect your wallet");
   };
 
   const handleShowDetailsClick = (proposal) => {
-    if (!web3State.isConnected) {
+    if (!isConnected) {
       alert("Please connect your wallet");
       return;
     }
-
     setSelectedProposal(proposal);
-
     if (
       proposal.timeRemaining === "Voting ended" ||
       userVotes.some((vote) => vote.question_id === proposal.question_id)
@@ -186,7 +142,7 @@ const App = () => {
         onClose={closeAllModals}
         questionId={selectedProposal?.question_id}
       />
-      <ConnectModal show={showConnectModal} onClose={closeAllModals} />
+
       <VotingModal
         show={showVotingModal}
         onClose={closeAllModals}
@@ -202,7 +158,7 @@ const App = () => {
         questionId={selectedProposal?.question_id}
       />
 
-      <Header onConnect={openConnectModal} onSubmit={handleSubmit} />
+      <Header onSubmit={handleSubmit} />
       <Title />
 
       <div className="proposalsTitle">

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import "./index.css";
 import { SquarePlus } from "lucide-react";
-import { useWeb3Context } from "../../main";
-import { useAddQuestion } from "../../hooks/useAddQuestion"; // Import the new hook
+import { useAddQuestion } from "../../hooks/useAddQuestion";
+import { useAccount } from "wagmi";
+
+import "./index.css";
 
 const CATEGORIES = [
   {
@@ -55,11 +56,11 @@ const getCategoryBg = (categoryName) => {
 };
 
 const SubmitModal = ({ show, onClose }) => {
-  const { web3State } = useWeb3Context();
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
   const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0].name);
-  const addQuestionMutation = useAddQuestion(); // Use the new hook
+  const addQuestionMutation = useAddQuestion();
+  const { isConnected } = useAccount();
 
   if (!show) return null;
 
@@ -84,7 +85,7 @@ const SubmitModal = ({ show, onClose }) => {
   };
 
   const handleVote = async () => {
-    if (!web3State?.isConnected) {
+    if (!isConnected) {
       alert("Please connect your wallet");
       return;
     }

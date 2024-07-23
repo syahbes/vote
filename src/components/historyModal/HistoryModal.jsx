@@ -1,16 +1,12 @@
 import React from "react";
 import "./index.css";
-import { useWeb3Context } from "../../main";
 import { useUserVotes } from "../../hooks/useUserVotes";
+import { useAccount } from "wagmi";
 
 const HistoryModal = ({ show, onClose }) => {
-  const { web3State } = useWeb3Context();
-  const {
-    data: userVotes,
-    isLoading,
-    error,
-  } = useUserVotes(web3State?.userAddress);
-  
+  const { address } = useAccount();
+  const { data: userVotes, isLoading, error } = useUserVotes(address);
+
   if (!show) return null;
 
   const handleOverlayClick = (e) => {

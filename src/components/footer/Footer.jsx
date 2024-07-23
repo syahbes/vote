@@ -1,13 +1,17 @@
 import React from "react";
 import "./index.css";
 
+import logo from "/icons/logo.png";
+import vector from "/icons/vector.png";
+import mail from "/icons/mail.png";
+
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-logo">
           <a href="https://tomi.com">
-            <img src="/icons/logo.png" alt="tomi" className="logo" />
+            <img src={logo} alt="tomi" className="logo" />
           </a>
         </div>
         <div className="footer-links">
@@ -50,7 +54,7 @@ const Footer = () => {
         <div className="email-us">
           <div className="mail-logo">
             <a href="mailto:tomiteam@proton.me">
-              <img src="/icons/mail.png" alt="mail" />
+              <img src={mail} alt="mail" />
             </a>
           </div>
           <h3>Email Us</h3>
@@ -60,13 +64,13 @@ const Footer = () => {
               email for prompt support and feedback.
             </p>
             <div className="vector-logo">
-              <img src="/icons/vector.png" alt="" />
+              <img src={vector} alt="" />
             </div>
           </div>
         </div>
       </div>
       <div className="footer-bottom">
-        <p>© 2023 tomi, all rights reserved.</p>
+        <p>© 2024 tomi, all rights reserved.</p>
         <div className="footer-legal">
           <a href="https://tomi.com/useragreement">Terms Of Use</a>
           <span className="separator">|</span>

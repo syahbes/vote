@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import { CircleX } from "lucide-react";
 import Web3 from "web3";
-import { useWeb3Context } from "../../main";
-import { getBaseUrl, handleAuthentication } from "../../utils/utils";
+import { handleAuthentication } from "../../utils/utils";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import "./index.css";
 
-const APP_URL = "tomi-vote.vercel.app";
+const APP_URL = "tomivote.tomi.com";
 
 const CONNECTION_OPTIONS = [
   {
@@ -27,7 +26,6 @@ const CONNECTION_OPTIONS = [
 ];
 
 const ConnectModal = ({ show, onClose }) => {
-  const { updateWeb3State } = useWeb3Context();
   const { open } = useWeb3Modal();
 
   if (!show) return null;
@@ -52,8 +50,9 @@ const ConnectModal = ({ show, onClose }) => {
         signature
       );
       if (result?.authenticated) {
-        console.log("User authenticated successfully [Metamask]");
-        updateWeb3State({ isConnected: true, userAddress: accounts[0] });
+        console.log(
+          "Connect Modal: User authenticated successfully [Metamask]"
+        );
         onClose();
       } else {
         console.log("Authentication failed");
@@ -61,7 +60,6 @@ const ConnectModal = ({ show, onClose }) => {
     } catch (error) {
       console.error("User denied account access", error);
       alert("User denied account access");
-      updateWeb3State({ isConnected: false, userAddress: null });
       onClose();
     }
   };

@@ -4,24 +4,23 @@ import "./index.css";
 import { getFormattedWalletAddress, getTimeRemaining } from "../../utils/utils";
 import { useSelectedProposal } from "../../hooks/useSelectedProposal";
 import { useVoteQuestion } from "../../hooks/useVote";
-import { useWeb3Context } from "../../main";
+import { useAccount } from "wagmi";
 
 const VotingModal = ({ show, onClose, questionId, openStatsModal }) => {
-  const { web3State } = useWeb3Context();
+  const { address, isConnected } = useAccount();
   const [selectedOption, setSelectedOption] = useState(null);
-  
-  
+
   const {
     isPending: isSelectedProposalLoading,
     error: selectedProposalError,
     data: fetchedSelectedProposal,
   } = useSelectedProposal(questionId);
-  const voteQuestionMutation = useVoteQuestion(web3State?.userAddress);
-  
+  const voteQuestionMutation = useVoteQuestion(address);
+
   if (!show) return null;
 
   if (isSelectedProposalLoading) {
-    return <div>Loading...</div>;
+    return <div style={{display: "none"}}/>;
   }
 
   if (selectedProposalError) {
@@ -34,7 +33,7 @@ const VotingModal = ({ show, onClose, questionId, openStatsModal }) => {
       return;
     }
 
-    if (!web3State?.isConnected) {
+    if (!isConnected) {
       alert("Please connect your wallet");
       return;
     }

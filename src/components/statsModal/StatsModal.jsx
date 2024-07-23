@@ -4,17 +4,17 @@ import "./index.css";
 import { getFormattedWalletAddress, getTimeRemaining } from "../../utils/utils";
 import { useSelectedProposal } from "../../hooks/useSelectedProposal";
 
-const StatsgModal = ({ show, onClose, questionId }) => {
+const StatsModal = ({ show, onClose, questionId }) => {
   const {
     isPending: isSelectedProposalLoading,
     error: selectedProposalError,
     data: fetchedSelectedProposal,
   } = useSelectedProposal(questionId);
-  
+
   if (!show) return null;
 
   if (isSelectedProposalLoading) {
-    return <div>Loading...</div>;
+    return <div style={{ display: "none" }} />;
   }
 
   if (selectedProposalError) {
@@ -43,7 +43,7 @@ const StatsgModal = ({ show, onClose, questionId }) => {
         </h2>
         <div className="meta">
           <div className="created-by">
-            Created By: 
+            Created By:
             <img
               src={fetchedSelectedProposal?.avatar}
               alt="Team"
@@ -55,22 +55,23 @@ const StatsgModal = ({ show, onClose, questionId }) => {
         <div className="voting-options">
           {fetchedSelectedProposal?.options.map((option) => (
             <div key={option.option_id} className="vote-option">
-              <div 
-                className="vote-bar-wrapper" 
-                style={{ maxWidth: `${option.vote_percentage}%` }}
-              >
+              <div
+                className="vote-bar-wrapper"
+                style={{ maxWidth: `${option.vote_percentage}%` }}>
                 <div className="vote-bar" />
               </div>
-              <span 
+              <span
                 className="vote-text"
-                style={{ color: option.vote_percentage > 40 ? '#1e1e1e' : 'white' }}
-              >
+                style={{
+                  color: option.vote_percentage > 40 ? "#1e1e1e" : "white",
+                }}>
                 {option.option_text}
               </span>
-              <span 
+              <span
                 className="vote-percentage"
-                style={{ color: option.vote_percentage > 90 ? '#1e1e1e' : 'white' }}
-              >
+                style={{
+                  color: option.vote_percentage > 90 ? "#1e1e1e" : "white",
+                }}>
                 {option.vote_percentage}%
               </span>
             </div>
@@ -85,4 +86,4 @@ const StatsgModal = ({ show, onClose, questionId }) => {
   );
 };
 
-export default StatsgModal;
+export default StatsModal;
