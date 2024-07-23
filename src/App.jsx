@@ -41,17 +41,11 @@ const App = () => {
     closeAllModals,
   } = useModals();
 
-  useAccountEffect({
-    onConnect(data) {
-      const token = localStorage.getItem("authToken");
-      if (!token) {
-        handleSuccessfulConnect();
-      }
-    },
-    onDisconnect() {
-      console.log("useAccountEffect: Disconnected!");
-    },
-  });
+  useEffect(() => {
+    if (isConnected) {
+      handleSuccessfulConnect();
+    }
+  }, [isConnected]);
 
   useEffect(() => {
     if (signMessageData) {
@@ -80,7 +74,7 @@ const App = () => {
 
   const handleSuccessfulConnect = async () => {
     try {
-      signMessage({ message: sign_message });
+      await signMessage({ message: sign_message });
     } catch (err) {
       console.error("Error signing message:", err);
     }
