@@ -43,7 +43,7 @@ const App = () => {
 
   useEffect(() => {
     if (isConnected) {
-      handleSuccessfulConnect();
+      signMessage({ message: sign_message });
     }
   }, [isConnected]);
 
@@ -68,15 +68,7 @@ const App = () => {
         console.log("Authentication failed");
       }
     } catch (err) {
-      console.error("Error signing message:", err);
-    }
-  };
-
-  const handleSuccessfulConnect = async () => {
-    try {
-      await signMessage({ message: sign_message });
-    } catch (err) {
-      console.error("Error signing message:", err);
+      console.error("Error handling authentication:", err);
     }
   };
 
