@@ -76,7 +76,6 @@ const App = () => {
 
   useAccountEffect({
     onConnect(data) {
-      alert(`Connected to ${getFormattedWalletAddress(data.address)}`);
       const token = localStorage.getItem("authToken");
       if (token) {
         updateWeb3State({ isConnected: true, userAddress: data.address });
