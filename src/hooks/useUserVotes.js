@@ -13,9 +13,9 @@ const fetchUserVotes = async ({ queryKey }) => {
       "Content-Type": "application/json",
     },
   });
-  if (response.status === 403) { 
-    handelUnauthorized();
-  }
+  // if (response.status === 403) { 
+  //   handelUnauthorized();
+  // }
   if (!response.ok) {
     if (response.status === 401) {
       throw new Error("Unauthorized access. Please log in again.");

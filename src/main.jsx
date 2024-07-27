@@ -26,6 +26,9 @@ const config = defaultWagmiConfig({
   chains,
   projectId,
   metadata,
+  auth: {
+    email: false,
+  },
 });
 
 createWeb3Modal({
