@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { getBaseUrl } from "../utils/utils";
+import { getBaseUrl, handelUnauthorized } from "../utils/utils";
 
 const url = getBaseUrl();
-
 
 const fetchSelectedProposal = async (id) => {
   // Retrieve the token from localStorage
@@ -15,6 +14,10 @@ const fetchSelectedProposal = async (id) => {
     },
   });
 
+  // Unauthorized access
+  if (response.status === 403) {
+    handelUnauthorized();
+  }
   if (!response.ok) {
     if (response.status === 401) {
       // Handle unauthorized access (e.g., token expired)
@@ -31,10 +34,5 @@ export const useSelectedProposal = (id) => {
     queryKey: ["selectedProposal", id],
     queryFn: () => fetchSelectedProposal(id),
     enabled: !!id,
-    // Add error handling
-    onError: (error) => {
-      console.error("Error fetching proposal:", error);
-      // You can add additional error handling here, such as showing a notification to the user
-    },
   });
 };

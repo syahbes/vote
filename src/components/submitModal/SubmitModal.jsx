@@ -4,45 +4,7 @@ import { useAddQuestion } from "../../hooks/useAddQuestion";
 import { useAccount } from "wagmi";
 
 import "./index.css";
-
-const CATEGORIES = [
-  {
-    name: "Browser",
-    bg: "1.png",
-  },
-  {
-    name: "Domains",
-    bg: "2.png",
-  },
-  {
-    name: "Wallet",
-    bg: "3.png",
-  },
-  {
-    name: "Storage",
-    bg: "4.png",
-  },
-  {
-    name: "Depin",
-    bg: "5.png",
-  },
-  {
-    name: "General",
-    bg: "6.png",
-  },
-  {
-    name: "Website",
-    bg: "7.png",
-  },
-  {
-    name: "CDN",
-    bg: "8.png",
-  },
-  {
-    name: "Compute",
-    bg: "9.png",
-  },
-];
+import { CATEGORIES } from "../../utils/constants";
 
 function getRandomCardBg() {
   const backgrounds = ["/cardBg/cardbga.png", "/cardBg/cardbgb.png"];
@@ -57,6 +19,7 @@ const getCategoryBg = (categoryName) => {
 
 const SubmitModal = ({ show, onClose }) => {
   const [question, setQuestion] = useState("");
+  const [title, setTitle] = useState("");
   const [options, setOptions] = useState(["", ""]);
   const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0].name);
   const addQuestionMutation = useAddQuestion();
@@ -69,6 +32,10 @@ const SubmitModal = ({ show, onClose }) => {
   };
 
   const addOption = () => {
+    if (options.length >= 4) {
+      alert("You can only add up to 4 options");
+      return;
+    }
     setOptions([...options, ""]);
   };
 
@@ -98,7 +65,8 @@ const SubmitModal = ({ show, onClose }) => {
 
     const newQuestion = {
       question_text: question,
-      question_title: question.split(" ").slice(0, 3).join(" "),
+      question_title: title,
+      // category: selectedCategory,
       question_bg: getCategoryBg(selectedCategory),
       options: options.map((option) => ({ option_text: option })),
       end_voting_time: end_voting_time,
@@ -106,6 +74,7 @@ const SubmitModal = ({ show, onClose }) => {
 
     try {
       await addQuestionMutation.mutateAsync(newQuestion);
+      setTitle("");
       setQuestion("");
       setOptions(["", ""]);
       onClose();
@@ -119,6 +88,16 @@ const SubmitModal = ({ show, onClose }) => {
     <div className="submit-modal-overlay" onClick={handleOverlayClick}>
       <div className="submit-proposal">
         <h2 className="title">SUBMIT PROPOSAL</h2>
+        <div className="input-group">
+          <label>Title</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="eg: Main website name"
+            className="input"
+          />
+        </div>
         <div className="input-group">
           <label>Question</label>
           <input

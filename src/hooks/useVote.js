@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getBaseUrl } from "../utils/utils";
+import { getBaseUrl,handelUnauthorized } from "../utils/utils";
 
 const url = getBaseUrl();
 
@@ -14,6 +14,9 @@ const voteQuestion = async (voteData) => {
     body: JSON.stringify(voteData),
   });
 
+  if (response.status === 403) {
+    handelUnauthorized();
+  }
   if (!response.ok) {
     if (response.status === 401) {
       // Handle unauthorized access (e.g., token expired)
