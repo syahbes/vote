@@ -112,13 +112,25 @@
 }
 
 @media screen and (max-width: 768px) {
-  .time-remaining-card {
-    display: flex;
-    align-items: center;
-    color: #cccccc;
-    font-size: 0.9rem;
-    justify-content: space-around;
+  .card {
     width: 100%;
-    flex-direction: row;
+
+    .card-content {
+      padding: 10px;
+    }
+    .title {
+      margin-bottom: 4px;
+      font-size: 1.2rem;
+      padding: 0;
+    }
+    .time-remaining-card {
+      display: flex;
+      align-items: center;
+      color: #cccccc;
+      font-size: 0.9rem;
+      justify-content: space-around;
+      width: 100%;
+      flex-direction: row;
+    }
   }
 }
