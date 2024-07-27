@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./App.css";
 import {
   useAccount,
   useSignMessage,
@@ -6,25 +7,31 @@ import {
   useDisconnect,
 } from "wagmi";
 import { formatUnits } from "viem";
-import "./App.css";
-import Header from "./components/header/Header";
-import Title from "./components/title/Title";
-import ProposalCard from "./components/proposalCard/ProposalCard";
-import Footer from "./components/footer/Footer";
-import SubmitModal from "./components/submitModal/SubmitModal";
-import VotingModal from "./components/votingModal/VotingModal";
-import StatsModal from "./components/statsModal/StatsModal";
-import HistoryModal from "./components/historyModal/HistoryModal";
 
+// Component imports
+import AwatingSignature from "./components/AwatingSignature/AwatingSignature";
+import Footer from "./components/footer/Footer";
+import Header from "./components/header/Header";
+import HistoryModal from "./components/historyModal/HistoryModal";
+import ProposalCard from "./components/proposalCard/ProposalCard";
+import StatsModal from "./components/statsModal/StatsModal";
+import SubmitModal from "./components/submitModal/SubmitModal";
+import Title from "./components/title/Title";
+import VotingModal from "./components/votingModal/VotingModal";
+
+// Hook imports
+import { useModals } from "./hooks/useModals";
 import { useQuestions } from "./hooks/useQuestions";
 import { useUserVotes } from "./hooks/useUserVotes";
-import { useModals } from "./hooks/useModals";
+
+// Utility imports
 import {
   getFormattedWalletAddress,
   getTimeRemaining,
   handleAuthentication,
 } from "./utils/utils";
 
+// Constants
 import {
   TOMI_CONTRACT_ADDRESS,
   tomiABI,
@@ -36,20 +43,25 @@ import {
 } from "./utils/constants";
 
 const App = () => {
+  // Hooks
   const { isPending, error, data: questions } = useQuestions();
-  const { data: signMessageData, signMessage } = useSignMessage();
+  const { data: signMessageData, isPending: isPending_signature, error: error_signature, signMessageAsync } = useSignMessage();
   const { address, isConnected } = useAccount();
-  const { data: userVotes, refetch: refetchUserVotes } = useUserVotes(address, {
-    onError: (error) => {
-      // Handle the error, e.g., show a notification or log out the user
-      console.error(error);
-    },
-  });
-  const [selectedProposal, setSelectedProposal] = useState(null);
-  const [hasSufficientBalance_submit, setHasSufficientBalance_submit] =
-    useState(false);
+  const { data: userVotes, refetch: refetchUserVotes } = useUserVotes(address);
   const { disconnect } = useDisconnect();
+  const { data: tomiBalance } = useReadContract({
+    address: TOMI_CONTRACT_ADDRESS,
+    abi: tomiABI,
+    functionName: "balanceOf",
+    args: [address],
+    enabled: Boolean(address),
+  });
 
+  // State
+  const [selectedProposal, setSelectedProposal] = useState(null);
+  const [hasSufficientBalance_submit, setHasSufficientBalance_submit] = useState(false);
+
+  // Modal hooks
   const {
     showSubmitModal,
     showVotingModal,
@@ -62,76 +74,28 @@ const App = () => {
     closeAllModals,
   } = useModals();
 
-  const { data: tomiBalance } = useReadContract({
-    address: TOMI_CONTRACT_ADDRESS,
-    abi: tomiABI,
-    functionName: "balanceOf",
-    args: [address],
-    enabled: Boolean(address),
-  });
-
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (isConnected && tomiBalance !== undefined) {
-      const balanceInTomi = parseFloat(formatUnits(tomiBalance, 18));
-      const isSufficientBalance_vote = balanceInTomi >= minimumBalance;
-      setHasSufficientBalance_submit(balanceInTomi >= minimumBalanceForSubmit);
-      if (isSufficientBalance_vote) {
-        if (!token) {
-          signMessage({ message: sign_message });
-        }
-      } else {
-        disconnect();
-        localStorage.clear();
-
-        alert(
-          "Insufficient TOMI balance. Please top up your wallet.\n\n" +
-            "Minimum balance required: " +
-            minimumBalance +
-            " TOMI"
-        );
-      }
-    }
-  }, [isConnected, tomiBalance, disconnect, signMessage]);
-
-  useEffect(() => {
-    if (signMessageData) {
-      getTokenFromServerBySign();
-    }
-  }, [signMessageData]);
-
-  const getTokenFromServerBySign = async () => {
+  // Functions
+  const authenticateUser = async () => {
     try {
-      const result = await handleAuthentication(
-        address,
-        sign_message,
-        signMessageData
-      );
-      console.log("result: ", result);
+      const signature = await signMessageAsync({ message: sign_message });
+      const result = await handleAuthentication(address, sign_message, signature);
       if (result?.authenticated) {
         console.log("User authenticated successfully [WalletConnect]");
         refetchUserVotes();
       } else {
         console.log("Authentication failed");
       }
-    } catch (err) {
-      console.error("Error handling authentication:", err);
+    } catch (error) {
+      console.error("Error signing message:", error);
     }
   };
 
   const findLastSubmitTime = (address, questions) => {
-    const userProposals = questions.filter(
-      (q) => q.question_created_by === address
-    );
-    if (userProposals.length === 0) {
-      return null;
-    }
-    const latestProposal = userProposals.reduce((latest, current) => {
-      return new Date(current.created_at) > new Date(latest.created_at)
-        ? current
-        : latest;
-    });
-    return new Date(latestProposal.created_at);
+    const userProposals = questions.filter((q) => q.question_created_by === address);
+    if (userProposals.length === 0) return null;
+    return new Date(userProposals.reduce((latest, current) => 
+      new Date(current.created_at) > new Date(latest.created_at) ? current : latest
+    ).created_at);
   };
 
   const handleSubmit = () => {
@@ -139,25 +103,18 @@ const App = () => {
       alert("Please connect your wallet");
       return;
     }
-    
+
     if (!hasSufficientBalance_submit) {
-      alert(
-        "Insufficient TOMI balance. Please top up your wallet.\n\n" +
-          "Minimum balance required: " +
-          minimumBalanceForSubmit +
-          " TOMI"
-      );
+      alert(`Insufficient TOMI balance. Please top up your wallet.\n\nMinimum balance required: ${minimumBalanceForSubmit} TOMI`);
       return;
     }
 
     const lastSubmitTime = findLastSubmitTime(address, questions);
     if (lastSubmitTime) {
-      const currentTime = new Date(); // UTC
-      const timeDifference = currentTime - lastSubmitTime; // Milliseconds difference
+      const currentTime = new Date();
+      const timeDifference = currentTime - lastSubmitTime;
       if (timeDifference < submitPeriodInMillis) {
-        alert(
-          `You can only submit a proposal every ${submitPeriodInHours} hours. Please try again later.`
-        );
+        alert(`You can only submit a proposal every ${submitPeriodInHours} hours. Please try again later.`);
         return;
       }
     }
@@ -190,23 +147,38 @@ const App = () => {
           category={item.category}
           title={item.question_title}
           description={item.question_text}
-          createdBy={
-            item.category === "Team"
-              ? "Team"
-              : getFormattedWalletAddress(item.question_created_by)
-          }
+          createdBy={item.category === "Team" ? "Team" : getFormattedWalletAddress(item.question_created_by)}
           createdByAvatar={item.avatar}
           timeRemaining={getTimeRemaining(item.end_voting_time)}
-          onClick={() =>
-            handleShowDetailsClick({
-              ...item,
-              timeRemaining: getTimeRemaining(item.end_voting_time),
-            })
-          }
+          onClick={() => handleShowDetailsClick({...item, timeRemaining: getTimeRemaining(item.end_voting_time)})}
         />
       ))}
     </main>
   );
+
+  // Effects
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (isConnected && tomiBalance !== undefined) {
+      const balanceInTomi = parseFloat(formatUnits(tomiBalance, 18));
+      const isSufficientBalance_vote = balanceInTomi >= minimumBalance;
+      setHasSufficientBalance_submit(balanceInTomi >= minimumBalanceForSubmit);
+      if (isSufficientBalance_vote) {
+        if (!token) {
+          authenticateUser();
+        }
+      } else {
+        disconnect();
+        localStorage.clear();
+        alert(`Insufficient TOMI balance. Please top up your wallet.\n\nMinimum balance required: ${minimumBalance} TOMI`);
+      }
+    }
+  }, [isConnected, tomiBalance, disconnect]);
+
+  // Render
+  if (isPending_signature) {
+    return <AwatingSignature />;
+  }
 
   return (
     <div className="app">
@@ -216,7 +188,6 @@ const App = () => {
         onClose={closeAllModals}
         questionId={selectedProposal?.question_id}
       />
-
       <VotingModal
         show={showVotingModal}
         onClose={closeAllModals}

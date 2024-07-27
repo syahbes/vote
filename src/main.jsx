@@ -1,15 +1,14 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createWeb3Modal } from "@web3modal/wagmi/react";
+import { arbitrum, mainnet } from "wagmi/chains";
+import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
+import { WagmiProvider } from "wagmi";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
 
-import { createWeb3Modal } from "@web3modal/wagmi/react";
-import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
-import { WagmiProvider } from "wagmi";
-import { arbitrum, mainnet } from "wagmi/chains";
-
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient(); // for all the API
 const queryClientW = new QueryClient(); // for web3
@@ -41,7 +40,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClientW}>
         <App />
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </WagmiProvider>
   </QueryClientProvider>
