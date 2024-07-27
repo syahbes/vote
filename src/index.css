@@ -108,6 +108,7 @@ h3 {
   }
   .proposalsTitle {
     padding: 0;
+    padding-right: 10px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -123,8 +124,8 @@ h3 {
     }
 
     button {
-      padding: 10px;
-      font-size: 14px;
+      padding: 8px;
+      font-size: 12px;
       margin-right: 10px;
     }
   }
