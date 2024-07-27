@@ -41,7 +41,11 @@
   font-size: 1rem;
   margin-bottom: 16px;
   width: fit-content;
-  text-transform: uppercase;
+  text-transform: capitalize;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .meta {

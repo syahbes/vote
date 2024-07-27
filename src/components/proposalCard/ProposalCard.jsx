@@ -1,5 +1,5 @@
 import { Clock } from "lucide-react";
-import './index.css'
+import "./index.css";
 
 const ProposalCard = ({
   imageUrl,
@@ -16,10 +16,10 @@ const ProposalCard = ({
     <div
       className="card"
       style={{
-        borderColor:
-          category === "Team"
-            ? "var(--primary-color)"
-            : "var(--card-border-color)",
+        borderColor: "var(--card-border-color)",
+        // category === "Team"
+        //   ? "var(--primary-color)"
+        //   : "var(--card-border-color)",
       }}>
       <img src={imageUrl} alt="Proposal" className="card-image" />
       <div className="card-content">

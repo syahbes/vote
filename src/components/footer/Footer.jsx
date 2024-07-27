@@ -70,7 +70,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>© 2024 tomi, all rights reserved.</p>
+        <p>© 2024 tomi, All rights reserved.</p>
         <div className="footer-legal">
           <a href="https://tomi.com/useragreement">Terms Of Use</a>
           <span className="separator">|</span>

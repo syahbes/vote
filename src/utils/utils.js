@@ -43,15 +43,22 @@ export async function handleAuthentication(address, message, signature) {
 
     const data = await response.json();
     if (data.authenticated && data.token) {
-      console.log("--> Authenticated successfully");
+      console.log("Authenticated successfully");
       localStorage.setItem("authToken", data.token);
       return data;
     }
 
     console.log("Authentication failed or token missing");
+    handelUnauthorized();
     return null;
   } catch (error) {
     console.error("Error during authentication:", error);
+    handelUnauthorized();
     throw error;
   }
+}
+
+export function handelUnauthorized() {
+  localStorage.clear();
+  //  window.location.reload();
 }

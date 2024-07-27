@@ -1,14 +1,20 @@
 .footer {
   color: #fff;
-  padding: 40px 20px;
+  padding: 40px 30px 40px 50px;
   font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /*! background: violet; */
+  justify-content: center;
+  box-sizing: border-box;
 }
-
 .footer-content {
   display: flex;
   justify-content: space-between;
-  max-width: 1200px;
-  margin: 0 auto;
+  /*! max-width: 1200px; */
+  /*! margin: 0 auto; */
+  width: 100%;
 }
 
 .footer-logo .logo {
@@ -17,7 +23,7 @@
 
 .footer-links {
   display: flex;
-  gap: 40px;
+  gap: 90px;
 }
 
 .link-column {
@@ -35,7 +41,7 @@
 
 .email-us {
   padding: 20px;
-  max-width: 300px;
+  max-width: 350px;
   position: relative;
   text-align: start;
 }
@@ -50,7 +56,7 @@
   border-radius: 5px;
   border: 2px solid transparent;
   background: linear-gradient(
-      135deg,
+      142deg,
       var(--primary-color) 30%,
       var(--background-color) 45%
     )
@@ -99,8 +105,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
-  margin: 20px auto 0;
+  
+  width: 100%;
+  margin: 20px 0;
   padding-top: 20px;
   border-top: 1px solid #333;
   font-size: 12px;

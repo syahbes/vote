@@ -25,7 +25,13 @@ h1 {
   font-family: var(--font-family);
   font-weight: 700;
   font-size: 60px;
-  color: var(--primary-color);
+  /* color: var(--primary-color); */
+}
+h2 {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 50px;
+  color: var(--text-color);
 }
 h3 {
   font-family: var(--font-family);
@@ -77,6 +83,11 @@ h3 {
 @media screen and (max-width: 768px) {
   h1 {
     font-size: 40px;
+  }
+
+  h2 {
+    font-size: 30px;
+    padding-left: 10px;
   }
   h3 {
     font-size: 20px;

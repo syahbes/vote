@@ -1,30 +1,46 @@
 .titleWrapper {
-    width: 90%;
-    margin: 0 auto;
-    position: relative;
-    padding: 20px;
+  width: 90%;
+  margin: 0 auto 40px auto;
+  position: relative;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.curvyLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25%;
+  height: 100%;
+  z-index: -1; /* Ensure the lines are behind the content */
+  transform: rotate(-40deg);
+}
+
+@media screen and (max-width: 768px) {
+  .curvyLine {
+    width: 100%;
+    height: 30%;
   }
-  
+}
+
+.blockchainLogo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 120px;
+  height: 120px;
+  /* transform: rotate(10deg); */
+}
+@media screen and (max-width: 1290px) {
+  .curvyLine {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1200px) {
   .blockchainLogo {
-    position: absolute;
-    top: 20px;
-    left: 20px;
     width: 60px;
     height: 60px;
-    transform: rotate(+10deg); /* Adjust this angle as needed */
+    left: 20px;
   }
-  
-  .blockchainLogo {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 20px;
-  }
-
-  @media screen and (max-width: 768px) {
-    .blockchainLogo {
-      width: 60px;
-      height: 60px;
-      left: -20px;
-    }
-    
-  }
+}
