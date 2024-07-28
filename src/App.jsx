@@ -81,11 +81,8 @@ const App = () => {
   } = useModals();
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
     if (isConnected) {
-      if (!token) {
-        authenticateUser();
-      }
+      authenticateUser();
     }
   }, [isConnected]);
 
@@ -108,21 +105,37 @@ const App = () => {
   // Functions
   const authenticateUser = async () => {
     try {
-      const signature = await signMessageAsync({ message: sign_message });
-      const result = await handleAuthentication(
-        address,
-        sign_message,
-        signature
-      );
-      if (result?.authenticated) {
-        console.log("User authenticated successfully [WalletConnect]");
-        //check if user has sufficient balance
-        refetchUserVotes();
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        handleTokenValidation(token);
       } else {
-        console.log("Authentication failed");
+        await handleUserAuthentication();
       }
     } catch (error) {
-      console.error("Error signing message:", error);
+      console.error("Error during authentication:", error);
+    }
+  };
+
+  const handleTokenValidation = (token) => {
+    const decoded = JSON.parse(atob(token.split(".")[1]));
+    const tokenAddress = getFormattedWalletAddress(decoded.wallet_address);
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (decoded.exp < currentTime || tokenAddress !== address) {
+      console.log("Token has expired or address does not match - re sign");
+      handleUserAuthentication();
+    }
+  };
+
+  const handleUserAuthentication = async () => {
+    const signature = await signMessageAsync({ message: sign_message });
+    const result = await handleAuthentication(address, sign_message, signature);
+
+    if (result?.authenticated) {
+      console.log("User authenticated successfully [WalletConnect]");
+      refetchUserVotes();
+    } else {
+      console.log("Authentication failed");
     }
   };
 
