@@ -7,13 +7,18 @@ const fetchUserVotes = async ({ queryKey }) => {
   const userId = queryKey[1];
 
   const token = localStorage.getItem("authToken");
+
+  if (!token) {
+    console.log("no token");
+    throw new Error("Unauthorized access. Please log in again.");
+  }
   const response = await fetch(`${url}/api/votes/user`, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
   });
-  // if (response.status === 403) { 
+  // if (response.status === 403) {
   //   handelUnauthorized();
   // }
   if (!response.ok) {
