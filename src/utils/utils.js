@@ -28,38 +28,3 @@ export function getBaseUrl() {
   return import.meta.env.VITE_SERVER_URL;
   //return "https://votingserver-production.up.railway.app";
 }
-
-export async function handleAuthentication(address, message, signature) {
-  try {
-    const response = await fetch(`${getBaseUrl()}/api/auth/`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ address, message, signature }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    if (data.authenticated && data.token) {
-      console.log("Authenticated successfully");
-      localStorage.setItem("authToken", data.token);
-      return data;
-    }
-
-    console.log("Authentication failed or token missing");
-    handelUnauthorized();
-    return null;
-  } catch (error) {
-    console.error("Error during authentication:", error);
-    handelUnauthorized();
-    throw error;
-  }
-}
-
-export function handelUnauthorized() {
-  console.log("Unauthorized access. Please log in again.");
-  localStorage.removeItem("authToken");
-  //  window.location.reload();
-}

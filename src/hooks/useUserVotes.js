@@ -1,14 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { getBaseUrl, handelUnauthorized } from "../utils/utils";
+import { getBaseUrl } from "../utils/utils";
+import { getAuthToken } from "../utils/auth";
 
 const url = getBaseUrl();
 
-const fetchUserVotes = async ({ queryKey }) => {
-  const userId = queryKey[1];
-  const token = localStorage.getItem("authToken");
+const fetchUserVotes = async () => {
+  const token = getAuthToken();
   if (!token) {
-    console.log("no token");
-    throw new Error("Unauthorized access. Please log in again.");
+    throw new Error("Failed to fetch user votes. No token found.");
   }
   const response = await fetch(`${url}/api/votes/user`, {
     headers: {
@@ -16,19 +15,18 @@ const fetchUserVotes = async ({ queryKey }) => {
       "Content-Type": "application/json",
     },
   });
+  if (response.status === 403) {
+    throw new Error("Unauthorized access. Please log in again.");
+  }
   if (!response.ok) {
-    if (response.status === 401) {
-      throw new Error("Unauthorized access. Please log in again.");
-    }
     throw new Error("Failed to fetch user votes");
   }
   return response.json();
 };
 
-export const useUserVotes = (userId, token) => {
+export const useUserVotes = () => {
   return useQuery({
-    queryKey: ["userVotes", userId, token],
+    queryKey: ["userVotes"],
     queryFn: fetchUserVotes,
-    enabled: !!userId && !!token, // Only run the query if userId is provided
   });
 };

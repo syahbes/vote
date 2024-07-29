@@ -1,3 +1,8 @@
+export const APP_URL = "https://tomi-vote.vercel.app";
+// export const APP_URL = "https://vote.tomi.com";
+// export const APP_URL = "http://192.168.1.230:5173";
+//export const SERVER_URL = "";
+
 export const TOMI_CONTRACT_ADDRESS =
   "0x4385328cc4D643Ca98DfEA734360C0F596C83449";
 

@@ -7,7 +7,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-
+import { APP_URL } from "./utils/constants.js";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient(); // for all the API
@@ -17,7 +17,7 @@ const projectId = "355e607bcae92dfe12493844a5d252e1";
 const metadata = {
   name: "tomi vote",
   description: "Vote for features on tomi",
-  url: "https://vote.tomi.com", // origin must match your domain & subdomain
+  url: APP_URL,
   icons: ["https://avatars.githubusercontent.com/u/37784886"],
 };
 
