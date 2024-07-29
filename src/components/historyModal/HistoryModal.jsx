@@ -4,8 +4,9 @@ import { useUserVotes } from "../../hooks/useUserVotes";
 import { useAccount } from "wagmi";
 
 const HistoryModal = ({ show, onClose }) => {
+  const token = localStorage.getItem("authToken");
   const { address } = useAccount();
-  const { data: userVotes, isLoading, error } = useUserVotes(address);
+  const { data: userVotes, isLoading, error } = useUserVotes(address, token);
 
   if (!show) return null;
 
@@ -24,7 +25,7 @@ const HistoryModal = ({ show, onClose }) => {
           <p className="history-loading">Loading...</p>
         ) : userVotes && userVotes.length > 0 ? (
           <ul className="history-vote-list">
-            {userVotes.map((vote) => (
+            {userVotes?.map((vote) => (
               <li key={vote.vote_id} className="history-vote-item">
                 <p className="history-vote-question">{vote.question_title}</p>
                 <p className="history-vote-option">Voted: {vote.option_text}</p>

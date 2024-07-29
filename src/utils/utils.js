@@ -59,6 +59,7 @@ export async function handleAuthentication(address, message, signature) {
 }
 
 export function handelUnauthorized() {
-  localStorage.clear();
+  console.log("Unauthorized access. Please log in again.");
+  localStorage.removeItem("authToken");
   //  window.location.reload();
 }
