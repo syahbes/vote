@@ -21,15 +21,15 @@ export async function postForToken(address, message, signature) {
 
     const data = await response.json();
     if (data.authenticated && data.token) {
-      console.log("Authenticated successfully - postForToken");
+      // console.log("Authenticated successfully");
       setAuthToken(data.token);
       return data;
     }
 
-    console.log("Authentication failed or token missing - postForToken");
+    console.log("Authentication failed");
     return null;
   } catch (error) {
-    console.error("Error during authentication - postForToken:", error);
+    console.error("Error during authentication:", error);
     return null;
   }
 }
@@ -39,7 +39,8 @@ export function handleForbiddenAccess() {
   removeAuthToken();
 }
 
-export function checkExpiry(token) { //returns true if token is still valid
+export function checkExpiry(token) {
+  //returns true if token is still valid
   const decodedToken = JSON.parse(atob(token.split(".")[1]));
   const now = Date.now() / 1000;
   if (decodedToken.exp < now) {

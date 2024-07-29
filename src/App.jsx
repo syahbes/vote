@@ -106,9 +106,7 @@ const App = () => {
     console.log("auth Flow");
     try {
       const signature = await signMessageAsync({ message: sign_message });
-      console.log("signature", signature);
       const response = await postForToken(address, sign_message, signature);
-      console.log("response", response);
       if (response?.authenticated) {
         console.log("Authenticated successfully - authFlow");
         refetchUserVotes();
