@@ -117,10 +117,11 @@ const App = () => {
 
   const handleTokenValidation = async (token) => {
     const decoded = JSON.parse(atob(token.split(".")[1]));
-    const tokenAddress = getFormattedWalletAddress(decoded.wallet_address);
+    // const tokenAddress = getFormattedWalletAddress(decoded.wallet_address);
     const currentTime = Math.floor(Date.now() / 1000);
 
-    if (decoded.exp < currentTime || tokenAddress !== address) {
+    if (decoded.exp < currentTime) {
+      // || tokenAddress !== address) {
       console.log("Token has expired or address does not match - re sign");
       setTimeout(() => {
         handleUserAuthentication();
