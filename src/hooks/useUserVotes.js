@@ -5,9 +5,7 @@ const url = getBaseUrl();
 
 const fetchUserVotes = async ({ queryKey }) => {
   const userId = queryKey[1];
-
   const token = localStorage.getItem("authToken");
-
   if (!token) {
     console.log("no token");
     throw new Error("Unauthorized access. Please log in again.");
@@ -18,9 +16,6 @@ const fetchUserVotes = async ({ queryKey }) => {
       "Content-Type": "application/json",
     },
   });
-  // if (response.status === 403) {
-  //   handelUnauthorized();
-  // }
   if (!response.ok) {
     if (response.status === 401) {
       throw new Error("Unauthorized access. Please log in again.");
@@ -30,10 +25,10 @@ const fetchUserVotes = async ({ queryKey }) => {
   return response.json();
 };
 
-export const useUserVotes = (userId) => {
+export const useUserVotes = (userId, token) => {
   return useQuery({
-    queryKey: ["userVotes", userId],
+    queryKey: ["userVotes", userId, token],
     queryFn: fetchUserVotes,
-    enabled: !!userId, // Only run the query if userId is provided
+    enabled: !!userId && !!token, // Only run the query if userId is provided
   });
 };
