@@ -17,10 +17,10 @@ export const tomiABI = [
 export const sign_message =
   "Sign this message to authenticate with Wallet Connect to Tomi";
 
-export const minimumBalance = 100; // for voting
-export const minimumBalanceForSubmit = 5000; // for submitting new proposal
+export const minimumBalance = 90; // for voting
+export const minimumBalanceForSubmit = 100; // for submitting new proposal
 
-export const submitPeriodInHours = 4; // Time limit in hours
+export const submitPeriodInHours = 0.0001; // Time limit in hours
 export const submitPeriodInMillis = submitPeriodInHours * 60 * 60 * 1000;
 
 export const CATEGORIES = [

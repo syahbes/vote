@@ -1,11 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { getBaseUrl, handelUnauthorized } from "../utils/utils";
+import { getBaseUrl } from "../utils/utils";
+import { getAuthToken, handleForbiddenAccess } from "../utils/auth";
 
 const url = getBaseUrl();
 
 const fetchSelectedProposal = async (id) => {
-  // Retrieve the token from localStorage
-  const token = localStorage.getItem("authToken");
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error("failed to fetch proposal. no token found.");
+  }
 
   const response = await fetch(`${url}/api/question/${id}`, {
     headers: {
@@ -16,14 +19,11 @@ const fetchSelectedProposal = async (id) => {
 
   // Unauthorized access
   if (response.status === 403) {
-    handelUnauthorized();
+    handleForbiddenAccess();
+    throw new Error("failed to fetch proposal. unauthorized access.");
   }
   if (!response.ok) {
-    if (response.status === 401) {
-      // Handle unauthorized access (e.g., token expired)
-      throw new Error("Unauthorized access. Please log in again.");
-    }
-    throw new Error("failed to fetch proposal.");
+    throw new Error("failed to fetch proposal. response not ok.");
   }
 
   return response.json();

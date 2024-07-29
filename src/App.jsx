@@ -26,7 +26,7 @@ import { useUserVotes } from "./hooks/useUserVotes";
 
 // Utility imports
 import { getFormattedWalletAddress, getTimeRemaining } from "./utils/utils";
-import { getAuthToken, postForToken } from "./utils/auth";
+import { checkExpiry, getAuthToken, postForToken } from "./utils/auth";
 
 // Constants
 import {
@@ -57,7 +57,7 @@ const App = () => {
 
   // State
   const [selectedProposal, setSelectedProposal] = useState(null);
-  const [canVote, setCanVote] = useState(true);
+  const [canVote, setCanVote] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
 
   // Modal hooks
@@ -73,24 +73,46 @@ const App = () => {
     closeAllModals,
   } = useModals();
 
+  // Effects
   useEffect(() => {
-    if (isConnected) {
-      console.log("Connected - useEffect");
-      authFlow();
+    if (isConnected && tomiBalance !== undefined) {
+      const balanceInTomi = parseFloat(formatUnits(tomiBalance, 18));
+      setCanVote(balanceInTomi >= minimumBalance);
+      setCanSubmit(balanceInTomi >= minimumBalanceForSubmit);
+    }
+  }, [tomiBalance, isConnected]);
+
+  useEffect(() => {
+    console.log("isConnected - useEffect", isConnected);
+    const token = getAuthToken();
+    if (isConnected && !token) {
+      console.log("Connected - useEffect 1");
+      setTimeout(() => authFlow(), 2500);
+    }
+    if (isConnected && token) {
+      console.log("Connected - useEffect 2");
+      const isTokenValid = checkExpiry(token);
+      if (!isTokenValid) {
+        console.log("Connected - useEffect 3");
+        setTimeout(() => authFlow(), 2500);
+      } else {
+        console.log("Connected - useEffect 4");
+        refetchUserVotes();
+      }
     }
   }, [isConnected]);
 
   async function authFlow() {
     console.log("auth Flow");
-    // const token = getAuthToken();
-    // if (!token) {
-    //   console.log("no token - authFlow > signature");
-    // }
     try {
       const signature = await signMessageAsync({ message: sign_message });
       console.log("signature", signature);
       const response = await postForToken(address, sign_message, signature);
       console.log("response", response);
+      if (response?.authenticated) {
+        console.log("Authenticated successfully - authFlow");
+        refetchUserVotes();
+      }
     } catch (error) {
       console.log("error", error);
     }
@@ -152,7 +174,7 @@ const App = () => {
     setSelectedProposal(proposal);
     if (
       proposal.timeRemaining === "Voting ended" ||
-      userVotes?.some((vote) => vote.question_id === proposal.question_id)
+      userVotes.some((vote) => vote.question_id === proposal.question_id)
     ) {
       openStatsModal();
     } else {

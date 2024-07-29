@@ -28,9 +28,3 @@ export function getBaseUrl() {
   return import.meta.env.VITE_SERVER_URL;
   //return "https://votingserver-production.up.railway.app";
 }
-
-export function handelUnauthorized() {
-  console.log("Unauthorized access. Please log in again.");
-  //localStorage.removeItem("authToken");
-  //  window.location.reload();
-}

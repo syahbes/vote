@@ -34,3 +34,18 @@ export async function postForToken(address, message, signature) {
   }
 }
 
+export function handleForbiddenAccess() {
+  console.log("Unauthorized access. Please log in again.");
+  removeAuthToken();
+}
+
+export function checkExpiry(token) { //returns true if token is still valid
+  const decodedToken = JSON.parse(atob(token.split(".")[1]));
+  const now = Date.now() / 1000;
+  if (decodedToken.exp < now) {
+    console.log("Token expired. Please log in again.");
+    removeAuthToken();
+    return false;
+  }
+  return true;
+}
